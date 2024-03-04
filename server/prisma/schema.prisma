@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TaskCategory {
+  id      String @id @default(uuid())
+  title   String
+  Task    Task[]
+}
+
+model Task {
+  id       String       @id @default(uuid())
+  title    String
+  variants String[]
+  answer   String
+  category TaskCategory @relation(fields: [id], references: [id])
+}
+
+model Card {
+  id          String @id @default(uuid())
+  title       String
+  description String
+}
+
+// npx prisma generate
+// npx prisma db push
+// npx prisma studio
+// npx prisma migrate reset
