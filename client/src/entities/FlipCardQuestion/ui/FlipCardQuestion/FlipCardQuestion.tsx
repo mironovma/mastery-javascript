@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 import { Card, CardContent } from "@/shared/ui/card";
 
@@ -15,9 +15,6 @@ interface FlipCardQuestionProps {
 
     question: string;
     answer: string;
-
-    handleLeft?: () => void;
-    handleRight?: () => void;
 }
 
 export const FlipCardQuestion = ({
@@ -25,8 +22,6 @@ export const FlipCardQuestion = ({
     height = "250px",
     question,
     answer,
-    handleLeft,
-    handleRight,
 }: FlipCardQuestionProps) => {
     const [isFlipped, setIsFplipped] = useState<boolean>(false);
 
@@ -66,8 +61,6 @@ export const FlipCardQuestion = ({
                         }}
                     >
                         <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
-                            <div className="absolute right-0 w-1/2 h-full bg-red-700/40" />
-                            <div className="absolute w-1/2 h-full bg-green-500/40" />
                             <CardContent>{question}</CardContent>
                         </Card>
                     </motion.div>
@@ -83,17 +76,15 @@ export const FlipCardQuestion = ({
                             position: "absolute",
                         }}
                     >
-                        <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
-                            <div
-                                onClick={handleRight}
-                                className="absolute right-0 w-1/2 h-full bg-red-700/40"
-                            />
-                            <div
-                                onClick={handleLeft}
-                                className="absolute w-1/2 h-full bg-green-500/40"
-                            />
-                            <CardContent>{answer}</CardContent>
-                        </Card>
+                        <motion.div
+                            drag="x"
+                            dragConstraints={{ left: 1, right: 1 }}
+                            className="touch-none"
+                        >
+                            <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
+                                <CardContent>{answer}</CardContent>
+                            </Card>
+                        </motion.div>
                     </motion.div>
                 </div>
             </motion.div>

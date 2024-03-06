@@ -1,3 +1,4 @@
+import { PanInfo, motion, useMotionValue } from "framer-motion";
 import { useState } from "react";
 
 import { FlipCardQuestion } from "@/entities/FlipCardQuestion";
@@ -7,12 +8,19 @@ import { fetchTasks } from "../../api";
 import type { Task } from "../../model/types";
 
 export const TaskList = () => {
+    /**
+     * TODO:
+     * Сделать кастомный хук для этих трех состояний,
+     * чтобы не было нагромождений.
+     */
     const [tasks, setTasks] = useState<Task[]>([]);
     const [end, setEnd] = useState<boolean>(false);
     const [curr, setCurr] = useState<{ id: number; total: number }>({
         id: 0,
         total: tasks.length,
     });
+
+    const x = useMotionValue(0);
 
     /**
      * TODO:
@@ -65,6 +73,38 @@ export const TaskList = () => {
         onNextTask();
     };
 
+    /**
+     * TODO:
+     * Обернуть в useDebounce, чтобы лишние вызовы пропускать.
+     * Можно тоже обернуть в кастомный хук и использовать.
+     * Из хука можно доставать:
+     * + обновленную координату по Х,
+     * + функцию onDragX и onDragXEnd
+     */
+
+    const onDrag = (
+        event: MouseEvent | TouchEvent | PointerEvent,
+        info: PanInfo
+    ): void => {
+        x.set(info.point.x);
+        console.log(`X: ${info.point.x}`);
+        /**
+         * TODO: Как определять по координате Х свайп: знаю ответ или нет?
+         */
+    };
+
+    const onDragEnd = () => {
+        console.log(`Дарг закончился с координатой: ${x.get()}`);
+
+        if (x.get() > 50) {
+            handleRight();
+        }
+
+        if (x.get() < 50) {
+            handleLeft();
+        }
+    };
+
     if (end) {
         return (
             <div>
@@ -83,12 +123,24 @@ export const TaskList = () => {
             </div>
 
             {!!tasks.length && (
-                <FlipCardQuestion
-                    question={tasks[curr.id].question}
-                    answer={tasks[curr.id].answer}
-                    handleLeft={handleLeft}
-                    handleRight={handleRight}
-                />
+                <div>
+                    <motion.div
+                        drag="x"
+                        dragConstraints={{ left: 1, right: 1 }}
+                        onDrag={onDrag}
+                        onDragEnd={onDragEnd}
+                        className="touch-none"
+                    >
+                        <FlipCardQuestion
+                            question={tasks[curr.id].question}
+                            answer={tasks[curr.id].answer}
+                        />
+                    </motion.div>
+                    <div className="flex">
+                        <Button onClick={handleLeft}>Я знаю ответ</Button>
+                        <Button onClick={handleRight}>Я не знаю ответ</Button>
+                    </div>
+                </div>
             )}
         </div>
     );
