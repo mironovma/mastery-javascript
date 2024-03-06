@@ -45,6 +45,19 @@ model Task {
   typeId        String
 }
 
+//  Вверху подобие reword, только для изучения JavaScript и пр.
+// Сначала сделаю копию reword, а затем попробую то, что планировал изначально.
+// При чем сначала простую версию reword: без категорий, картинок и аудио.
+// Просто слово + перевод по нажатию
+
+model Word {
+  id            String @id @default(uuid())
+  word          String
+  translation   String
+  transcription String?
+  picture       String?
+}
+
 // npx prisma generate
 // npx prisma db push
 // npx prisma studio
