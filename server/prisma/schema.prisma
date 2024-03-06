@@ -7,24 +7,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TaskCategoryName {
+  JavaScript
+  TypeScript
+  React
+  General
+}
+
+enum TaskTypeName {
+  FlipCard
+  PickOne
+  PickMultiply
+  TrueOrFalse
+}
+
 model TaskCategory {
-  id      String @id @default(uuid())
-  title   String
-  Task    Task[]
+  id            String @id @default(uuid())
+  category      TaskCategoryName
+  tasks         Task[]
+}
+
+model TaskType {
+  id            String @id @default(uuid())
+  type          TaskTypeName
+  tasks         Task[]
 }
 
 model Task {
-  id       String       @id @default(uuid())
-  title    String
-  variants String[]
-  answer   String
-  category TaskCategory @relation(fields: [id], references: [id])
-}
+  id            String @id @default(uuid())
+  question      String
+  answer        String
+  hint          String?
 
-model Card {
-  id          String @id @default(uuid())
-  title       String
-  description String
+  category      TaskCategory @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  type          TaskType @relation(fields: [typeId], references: [id])
+  typeId        String
 }
 
 // npx prisma generate

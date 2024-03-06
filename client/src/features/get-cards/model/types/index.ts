@@ -1,5 +1,11 @@
-export interface Card {
+import { TaskCategory, TaskType } from "@/shared/types/tasks";
+
+export interface Task {
     id: string;
-    title: string;
-    description: string;
+    question: string;
+    answer: string;
+    hint: string;
+
+    category: TaskCategory;
+    type: TaskType;
 }

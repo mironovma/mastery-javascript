@@ -1,9 +1,12 @@
-import { CardList } from "@/features/get-cards";
+import { FlipCardQuestion } from "@/entities/FlipCardQuestion";
+import { TaskList } from "@/features/get-cards";
 
 function App() {
     return (
         <div className="w-full h-lvh flex justify-center items-center">
-            <CardList />
+            <div>
+                <TaskList />
+            </div>
         </div>
     );
 }

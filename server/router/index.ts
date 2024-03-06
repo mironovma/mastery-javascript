@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { cardController } from "../controllers/card-controller";
+import { taskController } from "../controllers/task-controller";
 
 const router = Router();
 
-router.get("/cards", cardController.getAllCards);
+router.get("/tasks", taskController.getAllTasks);
 
 export default router;

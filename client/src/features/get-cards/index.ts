@@ -1,3 +1,3 @@
-export { CardList } from "./ui/CardList/CardList";
+export { TaskList } from "./ui/TaskList/TaskList";
 
-export type { Card } from "./model/types/index";
+export type { Task } from "./model/types/index";
