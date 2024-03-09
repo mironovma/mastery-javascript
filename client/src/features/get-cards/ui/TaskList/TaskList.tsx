@@ -1,59 +1,53 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useCallback } from "react";
 
 import { FlipCardQuestion } from "@/entities/FlipCardQuestion";
-import { useCardDrag } from "@/shared/hooks/useCardDrag";
-import { Button } from "@/shared/ui/button";
 
-import { fetchTasks } from "../../api";
+import { Button } from "@/shared/ui/button";
+import { useCardDrag } from "@/shared/hooks/useCardDrag";
+import { useCardControl } from "@/shared/hooks/useQuestionLoad";
+
 import type { Task } from "../../model/types";
 
 export const TaskList = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [curr, setCurr] = useState<{ id: number; total: number }>({
-        id: 0,
-        total: tasks.length,
-    });
-    const [tasksEnd, setTasksEnd] = useState<boolean>(false);
+    const {
+        isLoading,
+        questions,
+        currentQuestionIndex,
+        onQuestionsLoad,
+        onQuestionsNext,
+    } = useCardControl<Task>("/tasks");
 
-    const getAllTasks = async () => {
-        try {
-            const response = await fetchTasks();
-            setTasks(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const handleLeft = useCallback(() => {
+        console.log(
+            "Знаю ответ на вопрос " + questions[currentQuestionIndex].id
+        );
+        onQuestionsNext();
+    }, [onQuestionsNext]);
 
-    const onNextTask = () => {
-        if (curr.id <= curr.total) {
-            setCurr(({ id, ...rest }) => ({ ...rest, id: id + 1 }));
-        } else {
-            setTasksEnd(true);
-        }
-    };
-
-    const handleLeft = () => {
-        console.log("Знаю ответ на вопрос");
-        onNextTask();
-        return false;
-    };
-
-    const handleRight = () => {
-        console.log("Не знаю ответа на вопрос");
-        onNextTask();
-        return false;
-    };
+    const handleRight = useCallback(() => {
+        console.log(
+            "Не знаю ответа на вопрос " + questions[currentQuestionIndex].id
+        );
+        onQuestionsNext();
+    }, [onQuestionsNext]);
 
     const { left, right, onDragStart, onDrag, onDragEnd } = useCardDrag({
         callbackLeft: handleLeft,
         callbackRight: handleRight,
     });
 
-    if (tasksEnd) {
+    if (isLoading) {
+        return <div>Загрзука...</div>;
+    }
+
+    if (currentQuestionIndex > 0 && currentQuestionIndex >= questions.length) {
         return (
             <div>
                 <h3>Карточки закончились</h3>
+                <Button onClick={onQuestionsLoad}>
+                    Перезагрузить карточки
+                </Button>
             </div>
         );
     }
@@ -61,10 +55,12 @@ export const TaskList = () => {
     return (
         <div>
             <div className="flex justify-between">
-                <Button onClick={getAllTasks}>Загрузить все карточки</Button>
+                <Button onClick={onQuestionsLoad}>
+                    Загрузить все карточки
+                </Button>
             </div>
 
-            {!!tasks.length && (
+            {!!questions.length && (
                 <div>
                     <motion.div
                         drag="x"
@@ -75,8 +71,8 @@ export const TaskList = () => {
                         className="touch-none"
                     >
                         <FlipCardQuestion
-                            question={tasks[curr.id].question}
-                            answer={tasks[curr.id].answer}
+                            question={questions[currentQuestionIndex].question}
+                            answer={questions[currentQuestionIndex].answer}
                         />
                     </motion.div>
                     <div className="flex">

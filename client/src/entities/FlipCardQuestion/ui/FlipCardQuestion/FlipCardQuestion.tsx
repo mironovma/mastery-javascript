@@ -1,5 +1,5 @@
-import { Variant, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 import { Card, CardContent } from "@/shared/ui/card";
 
@@ -25,8 +25,12 @@ export const FlipCardQuestion = ({
 }: FlipCardQuestionProps) => {
     const [isFlipped, setIsFplipped] = useState<boolean>(false);
 
+    useEffect(() => {
+        setIsFplipped(false);
+    }, [question, answer]);
+
     const handleFlip = () => {
-        setIsFplipped((prev) => !prev);
+        setIsFplipped(true);
     };
 
     return (
@@ -79,7 +83,7 @@ export const FlipCardQuestion = ({
                         }}
                     >
                         <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
-                            <CardContent>{answer}</CardContent>
+                            <CardContent>{isFlipped && answer}</CardContent>
                         </Card>
                     </motion.div>
                 </div>

@@ -1,5 +1,5 @@
-import { PanInfo } from "framer-motion";
 import { useState } from "react";
+import { PanInfo } from "framer-motion";
 
 interface UseCardDragProps {
     callbackLeft: () => void;

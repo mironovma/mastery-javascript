@@ -7,4 +7,16 @@ const $api = axios.create({
     baseURL: __API_URL__,
 });
 
+// TODO: Убрать искусственную задержку при запросе перед продом.
+
+$api.interceptors.request.use((config) => {
+    console.log("Запрос отправлен.");
+
+    return new Promise((resolve) =>
+        setTimeout(() => {
+            resolve(config);
+        }, 1000)
+    );
+});
+
 export default $api;
