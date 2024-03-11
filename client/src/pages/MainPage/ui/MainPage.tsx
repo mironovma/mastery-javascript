@@ -1,12 +1,9 @@
 import { memo } from "react";
 
-import { ThemeSwitcher } from "@/features/theme-switcher";
-
 const MainPage = () => {
     return (
-        <div>
-            <h3>Main Page</h3>
-            <ThemeSwitcher />
+        <div className="py-4">
+            <h1>Как повысить свои скиллы</h1>
         </div>
     );
 };

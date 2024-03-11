@@ -1,4 +1,4 @@
-import webpack, { Configuration } from "webpack";
+import webpack, { Configuration, DefinePlugin } from "webpack";
 import HTMLWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
@@ -19,6 +19,9 @@ export const buildPlugins = ({
             template: paths.html,
             // favicon: path.resolve(__dirname, paths.public, "favicon.png"),
             publicPath: "/",
+        }),
+        new DefinePlugin({
+            __APP_NAME__: JSON.stringify(process.env.APP_NAME),
         }),
     ];
 

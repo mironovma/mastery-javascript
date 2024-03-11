@@ -6,6 +6,8 @@ declare module "*.svg" {
     export default content;
 }
 
+declare const __APP_NAME__: string;
+
 type DeepPartial<T> = T extends object
     ? {
           [P in keyof T]?: DeepPartial<T[P]>;

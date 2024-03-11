@@ -1,9 +1,12 @@
+import { Navbar } from "@/widgets/Navbar";
+
 import { AppRouter } from "./providers/router";
 
 function App() {
     return (
-        <div className="w-full h-lvh flex justify-center items-center">
-            <AppRouter />
+        <div>
+            <Navbar className="px-4" />
+            <AppRouter className="px-4" />
         </div>
     );
 }
