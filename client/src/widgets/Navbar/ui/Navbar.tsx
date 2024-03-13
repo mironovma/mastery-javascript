@@ -30,7 +30,6 @@ export const Navbar = ({ className }: NavbarProps) => {
                 </SheetTrigger>
 
                 <SheetContent side="left">
-                    {/* TODO: Название приложения поменять */}
                     <SheetHeader>
                         <SheetTitle>Frontend Mastery</SheetTitle>
                     </SheetHeader>

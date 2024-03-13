@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 
 import { Card, CardContent, CardFooter } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { cn } from "@/shared/lib/utils";
 
-const spring = {
+const springConfig = {
     type: "spring",
     stiffness: 300,
     damping: 40,
@@ -13,7 +14,6 @@ const spring = {
 interface SingleCardTaskProps {
     question: string;
     answer: string;
-
     left: boolean;
     right: boolean;
     handleLeft: () => void;
@@ -28,35 +28,35 @@ export const SingleCardTask = ({
     handleLeft,
     handleRight,
 }: SingleCardTaskProps) => {
-    const [isFlipped, setIsFplipped] = useState<boolean>(false);
+    const [isFlipped, setIsFlipped] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsFplipped(false);
+        setIsFlipped(false);
     }, [question, answer]);
 
     const handleFlip = () => {
-        setIsFplipped(true);
+        setIsFlipped(true);
     };
 
     const controllButtons = (
         <div className="flex justify-between">
             <Button
+                className={cn(
+                    "rounded-none rounded-tr-md",
+                    left && "bg-green-500 text-white"
+                )}
                 variant="outline"
-                className="rounded-none"
                 onClick={handleLeft}
-                style={{
-                    backgroundColor: left ? "green" : "",
-                }}
             >
                 Я знаю ответ
             </Button>
             <Button
+                className={cn(
+                    "rounded-none rounded-tl-md",
+                    right && "bg-red-500 text-white"
+                )}
                 variant="outline"
-                className="rounded-none"
                 onClick={handleRight}
-                style={{
-                    backgroundColor: right ? "red" : "",
-                }}
             >
                 Я не знаю ответ
             </Button>
@@ -66,7 +66,7 @@ export const SingleCardTask = ({
     return (
         <div className="cursor-pointer select-none">
             <motion.div
-                transition={spring}
+                transition={springConfig}
                 style={{
                     perspective: "1200px",
                     transformStyle: "preserve-3d",
@@ -75,58 +75,49 @@ export const SingleCardTask = ({
                 }}
                 onClick={handleFlip}
             >
-                <div
+                <motion.div
+                    animate={{
+                        rotateY: isFlipped ? -180 : 0,
+                    }}
+                    transition={springConfig}
                     style={{
-                        perspective: "1200px",
-                        transformStyle: "preserve-3d",
                         width: "100%",
                         height: "100%",
+                        zIndex: isFlipped ? 0 : 1,
+                        backfaceVisibility: "hidden",
+                        position: "absolute",
                     }}
                 >
-                    <motion.div
-                        animate={{
-                            rotateY: isFlipped ? -180 : 0,
-                        }}
-                        transition={spring}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            zIndex: isFlipped ? 0 : 1,
-                            backfaceVisibility: "hidden",
-                            position: "absolute",
-                        }}
-                    >
-                        <Card className="w-full h-full overflow-hidden text-center">
-                            <CardContent className="h-full relative flex flex-col justify-center items-center">
-                                <p className="text-sm">{question}</p>
-                                <div className="w-full absolute bottom-0">
-                                    {controllButtons}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                    <motion.div
-                        initial={{ rotateY: 180 }}
-                        animate={{ rotateY: isFlipped ? 0 : 180 }}
-                        transition={spring}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            zIndex: isFlipped ? 0 : 1,
-                            backfaceVisibility: "hidden",
-                            position: "absolute",
-                        }}
-                    >
-                        <Card className="w-full h-full overflow-hidden text-center">
-                            <CardContent className="h-full relative flex flex-col justify-center items-center">
-                                <p className="text-sm">{isFlipped && answer}</p>
-                                <div className="w-full absolute bottom-0">
-                                    {controllButtons}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </div>
+                    <Card className="w-full h-full overflow-hidden text-center">
+                        <CardContent className="h-full relative flex flex-col justify-center items-center">
+                            <p className="text-sm">{question}</p>
+                            <div className="w-full absolute bottom-0">
+                                {controllButtons}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+                <motion.div
+                    initial={{ rotateY: 180 }}
+                    animate={{ rotateY: isFlipped ? 0 : 180 }}
+                    transition={springConfig}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        zIndex: isFlipped ? 0 : 1,
+                        backfaceVisibility: "hidden",
+                        position: "absolute",
+                    }}
+                >
+                    <Card className="w-full h-full overflow-hidden text-center">
+                        <CardContent className="h-full relative flex flex-col justify-center items-center">
+                            <p className="text-sm">{isFlipped && answer}</p>
+                            <div className="w-full absolute bottom-0">
+                                {controllButtons}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
             </motion.div>
         </div>
     );

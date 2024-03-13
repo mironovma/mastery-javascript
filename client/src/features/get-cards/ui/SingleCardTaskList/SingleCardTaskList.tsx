@@ -75,12 +75,6 @@ export const SingleCardTaskList = memo(
 
         return (
             <div className={cn(className)}>
-                {/* <div>
-                    <Button onClick={onQuestionsLoad}>
-                        Загрузить все карточки
-                    </Button>
-                </div> */}
-
                 {!!questions.length && (
                     <div>
                         <motion.div

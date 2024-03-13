@@ -4,10 +4,8 @@ import { PanInfo } from "framer-motion";
 interface UseCardDragProps {
     callbackLeft: () => void;
     callbackRight: () => void;
-
     callbackOnDragLeft?: () => void;
     callbackOnDragRight?: () => void;
-
     callbackFinally?: () => void;
 }
 
@@ -29,67 +27,47 @@ export const useCardDrag = ({
     callbackLeft,
     callbackRight,
     callbackFinally,
-
     callbackOnDragLeft,
     callbackOnDragRight,
 }: UseCardDragProps) => {
-    // Для вычисления куда был сделан свайп
-    const [startX, setStartX] = useState<number>(0);
-    // Флаг left и right для получения данных в какую сторону в данный момент происходит свайп
-    const [left, setLeft] = useState<boolean>(false);
-    const [right, setRight] = useState<boolean>(false);
+    const [draggingDirection, setDraggingDirection] = useState<
+        "left" | "right" | null
+    >(null);
 
-    // onDragStart
-    const onDragStart = (
-        event: MouseEvent | TouchEvent | PointerEvent,
-        info: PanInfo
-    ): void => {
-        setStartX(info.point.x);
+    const onDragStart = () => {
+        setDraggingDirection(null);
     };
 
-    // onDrag
     const onDrag = (
         event: MouseEvent | TouchEvent | PointerEvent,
         info: PanInfo
     ) => {
-        const currentX = info.point.x;
+        const direction = info.offset.x < 0 ? "left" : "right";
+        setDraggingDirection(direction);
 
-        if (currentX < startX) {
-            callbackOnDragLeft && callbackOnDragLeft();
-            setLeft(true);
-            setRight(false);
-        }
-
-        if (currentX > startX) {
-            callbackOnDragRight && callbackOnDragRight();
-            setLeft(false);
-            setRight(true);
+        if (direction === "left") {
+            callbackOnDragLeft?.();
+        } else {
+            callbackOnDragRight?.();
         }
     };
 
-    // onDragEnd
-    const onDragEnd = (
-        event: MouseEvent | TouchEvent | PointerEvent,
-        info: PanInfo
-    ) => {
-        const endX = info.point.x;
-
-        if (endX < startX) {
+    const onDragEnd = () => {
+        if (draggingDirection === "left") {
             callbackLeft();
         }
 
-        if (endX > startX) {
+        if (draggingDirection === "right") {
             callbackRight();
         }
 
-        callbackFinally && callbackFinally();
-        setLeft(false);
-        setRight(false);
+        callbackFinally?.();
+        setDraggingDirection(null);
     };
 
     return {
-        left,
-        right,
+        left: draggingDirection === "left",
+        right: draggingDirection === "right",
         onDrag,
         onDragStart,
         onDragEnd,

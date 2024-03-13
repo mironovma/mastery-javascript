@@ -1,8 +1,15 @@
 import { memo } from "react";
 
-import type { CategoryList } from "@/shared/types/categories";
 import { CategoryButton } from "@/shared/ui/custom/category-button";
 import { CategoryToHeader, TypeToHref } from "@/shared/const/categories";
+import { TaskCategory, TaskType } from "@/shared/types/tasks";
+
+interface CategoryTaskListProps {
+    className?: string;
+    description: string;
+    taskType: TaskType;
+    taskCategory: TaskCategory;
+}
 
 export const CategoryTaskList = memo(
     ({
@@ -10,7 +17,7 @@ export const CategoryTaskList = memo(
         description,
         taskType,
         taskCategory,
-    }: CategoryList & { className?: string }) => {
+    }: CategoryTaskListProps) => {
         return (
             <li className={className}>
                 <CategoryButton
