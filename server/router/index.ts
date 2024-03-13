@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { taskController } from "../controllers/task-controller";
-import { wordController } from "../controllers/word-controllet";
+import { taskCategoryController } from "../controllers/task-category-controller";
 
 const router = Router();
 
 router.get("/tasks", taskController.getAllTasks);
 
-// reword
-router.get("/words", wordController.getAllWords);
+router.get("/tasks-category", taskCategoryController.getCategories);
 
 export default router;

@@ -1,13 +1,8 @@
-export enum TaskCategory {
-    JavaScript = "JavaScript",
-    TypeScript = "TypeScript",
-    React = "React",
-    General = "General",
-}
+export type TaskCategory =
+    | "JavaScript"
+    | "TypeScript"
+    | "React"
+    | "General"
+    | "CssHtml";
 
-export enum TaskType {
-    FlipCard = "FlipCard",
-    PickOne = "PickOne",
-    PickMultiply = "PickMultiply",
-    TrueOrFalse = "TrueOrFalse",
-}
+export type TaskType = "SingleAnswer" | "MultipleAnswer" | "TrueFalseAnswer";

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import { Card, CardContent } from "@/shared/ui/card";
+import { Card, CardContent, CardFooter } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
 
 const spring = {
     type: "spring",
@@ -9,20 +10,24 @@ const spring = {
     damping: 40,
 };
 
-interface FlipCardQuestionProps {
+interface SingleCardTaskProps {
     question: string;
     answer: string;
 
-    width?: string;
-    height?: string;
+    left: boolean;
+    right: boolean;
+    handleLeft: () => void;
+    handleRight: () => void;
 }
 
-export const FlipCardQuestion = ({
+export const SingleCardTask = ({
     question,
     answer,
-    width = "250px",
-    height = "250px",
-}: FlipCardQuestionProps) => {
+    left,
+    right,
+    handleLeft,
+    handleRight,
+}: SingleCardTaskProps) => {
     const [isFlipped, setIsFplipped] = useState<boolean>(false);
 
     useEffect(() => {
@@ -33,6 +38,31 @@ export const FlipCardQuestion = ({
         setIsFplipped(true);
     };
 
+    const controllButtons = (
+        <div className="flex justify-between">
+            <Button
+                variant="outline"
+                className="rounded-none"
+                onClick={handleLeft}
+                style={{
+                    backgroundColor: left ? "green" : "",
+                }}
+            >
+                Я знаю ответ
+            </Button>
+            <Button
+                variant="outline"
+                className="rounded-none"
+                onClick={handleRight}
+                style={{
+                    backgroundColor: right ? "red" : "",
+                }}
+            >
+                Я не знаю ответ
+            </Button>
+        </div>
+    );
+
     return (
         <div className="cursor-pointer select-none">
             <motion.div
@@ -40,8 +70,8 @@ export const FlipCardQuestion = ({
                 style={{
                     perspective: "1200px",
                     transformStyle: "preserve-3d",
-                    width,
-                    height,
+                    width: "100%",
+                    height: "350px",
                 }}
                 onClick={handleFlip}
             >
@@ -66,8 +96,13 @@ export const FlipCardQuestion = ({
                             position: "absolute",
                         }}
                     >
-                        <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
-                            <CardContent>{question}</CardContent>
+                        <Card className="w-full h-full overflow-hidden text-center">
+                            <CardContent className="h-full relative flex flex-col justify-center items-center">
+                                <p className="text-sm">{question}</p>
+                                <div className="w-full absolute bottom-0">
+                                    {controllButtons}
+                                </div>
+                            </CardContent>
                         </Card>
                     </motion.div>
                     <motion.div
@@ -82,8 +117,13 @@ export const FlipCardQuestion = ({
                             position: "absolute",
                         }}
                     >
-                        <Card className="w-full h-full relative flex items-center overflow-hidden text-center">
-                            <CardContent>{isFlipped && answer}</CardContent>
+                        <Card className="w-full h-full overflow-hidden text-center">
+                            <CardContent className="h-full relative flex flex-col justify-center items-center">
+                                <p className="text-sm">{isFlipped && answer}</p>
+                                <div className="w-full absolute bottom-0">
+                                    {controllButtons}
+                                </div>
+                            </CardContent>
                         </Card>
                     </motion.div>
                 </div>

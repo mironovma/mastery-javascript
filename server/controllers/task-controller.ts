@@ -17,7 +17,13 @@ class TaskController {
 
     async getAllTasks(req: Request, res: Response, next: NextFunction) {
         try {
-            const tasks = await taskService.getAllTasks();
+            const { category, type, limit } = req.query;
+
+            const tasks = await taskService.getAllTasks(
+                category as string,
+                type as string,
+                limit as string
+            );
             return res.json(tasks);
         } catch (error) {
             console.log(error);

@@ -12,47 +12,47 @@ enum TaskCategoryName {
   TypeScript
   React
   General
+  CssHtml
 }
 
 enum TaskTypeName {
-  FlipCard
-  PickOne
-  PickMultiply
-  TrueOrFalse
+  SingleAnswer
+  MultipleAnswer
+  TrueFalseAnswer
 }
 
 model TaskCategory {
   id            String @id @default(uuid())
   category      TaskCategoryName
   tasks         Task[]
+
+  description   String?
+  href          TaskCategoryName?
 }
 
 model TaskType {
   id            String @id @default(uuid())
   type          TaskTypeName
   tasks         Task[]
+
+  description   String?
+  href          TaskTypeName?
 }
 
 model Task {
   id            String @id @default(uuid())
   question      String
-  answer        String
+
+  answerText    String?   // для карточек с одним ответов
+  answerOptions Json?     // несколько вариантов ответов
+  answerBoolean Boolean?  // для ответов true/false
+
   hint          String?
 
   category      TaskCategory @relation(fields: [categoryId], references: [id])
   categoryId    String
   type          TaskType @relation(fields: [typeId], references: [id])
   typeId        String
-}
-
-// удалить модель для Word
-
-model Word {
-  id            String @id @default(uuid())
-  word          String
-  translation   String
-  transcription String?
-  picture       String?
 }
 
 // npx prisma generate

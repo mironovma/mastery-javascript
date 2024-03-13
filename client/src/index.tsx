@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { ThemeProvider } from "./app/providers/ThemeProvider";
 
@@ -14,12 +15,16 @@ if (!root) throw new Error("Root not found");
 
 const container = createRoot(root);
 
+const queryClient = new QueryClient();
+
 container.render(
     <StrictMode>
-        <BrowserRouter>
-            <ThemeProvider>
-                <App />
-            </ThemeProvider>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <ThemeProvider>
+                    <App />
+                </ThemeProvider>
+            </BrowserRouter>
+        </QueryClientProvider>
     </StrictMode>
 );
