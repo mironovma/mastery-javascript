@@ -42,7 +42,12 @@ export const Navbar = ({ className }: NavbarProps) => {
                             </li>
                             <li>
                                 <SheetClose asChild>
-                                    <Link to="/games">Все игры</Link>
+                                    <Link to="/account">Мой профиль</Link>
+                                </SheetClose>
+                            </li>
+                            <li>
+                                <SheetClose asChild>
+                                    <Link to="/logout">Выйти</Link>
                                 </SheetClose>
                             </li>
                         </ul>
