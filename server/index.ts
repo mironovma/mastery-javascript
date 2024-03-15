@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-import router from "./router";
+import authRouter from "./routes/auth";
+import taskRouter from "./routes/task";
 
 dotenv.config();
 
@@ -22,7 +23,8 @@ app.use(
     })
 );
 
-app.use("/api", router);
+app.use("/api", authRouter);
+app.use("/api", taskRouter);
 // Все мидлварены подключаем в конце
 // app.use(middlewareError);
 

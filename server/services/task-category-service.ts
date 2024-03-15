@@ -2,8 +2,8 @@ import { db } from "../helpers/db";
 
 class TaskCategoryService {
     async getCategories() {
-        const taskCategories = await db.taskCategory.findMany();
-        return taskCategories;
+        // const taskCategories = await db.taskCategory.findMany();
+        // return taskCategories;
     }
 }
 

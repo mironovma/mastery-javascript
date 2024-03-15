@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { taskCategoryService } from "../service/task-category-service";
+import { taskCategoryService } from "../services/task-category-service";
 
 class TaskCategoryController {
     async getCategories(req: Request, res: Response, next: NextFunction) {
