@@ -1,17 +1,19 @@
-import { Separator } from "@radix-ui/react-separator";
 import { Fragment, memo } from "react";
-import { Link } from "react-router-dom";
+import { Separator } from "@radix-ui/react-separator";
 
+import defaultImage from "@/shared/assets/img/code.png";
 import { cn } from "@/shared/lib/utils";
 import { SectionHeader } from "@/shared/ui/custom/section-header";
+import { Checkbox } from "@/shared/ui/checkbox";
 
 const items = [
     {
-        header: "test",
-        description: "desc",
+        header: "JavaScript",
+        amount: 32,
         Icon: "image",
         iconColor: "",
         to: "",
+        imgLink: null,
     },
 ];
 
@@ -25,22 +27,30 @@ const CategoryPage = memo(() => {
                     <Fragment key={item.header}>
                         <li
                             className={cn(
-                                "px-2 py-4 flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 transition"
+                                "px-3 py-4 flex items-center justify-between cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 transition"
                             )}
                         >
-                            {item.Icon && (
-                                <div className="w-10 h-10 rounded-full flex items-center justify-center p-2 bg-gray-100 dark:bg-gray-600">
-                                    <img src="/" alt="img" />
+                            <div className="flex items-center gap-2">
+                                {item.Icon && (
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center p-2 bg-gray-100 dark:bg-gray-600">
+                                        <img
+                                            src={item.imgLink ?? defaultImage}
+                                            alt={item.header}
+                                        />
+                                    </div>
+                                )}
+                                <div>
+                                    <h3>{item.header}</h3>
+                                    <p className="text-muted-foreground text-sm">
+                                        {`${item.amount} карточки`}
+                                    </p>
                                 </div>
-                            )}
+                            </div>
                             <div>
-                                <h3>{item.header}</h3>
-                                <p className="text-muted-foreground text-sm">
-                                    {item.description}
-                                </p>
+                                <Checkbox />
                             </div>
                         </li>
-                        <Separator className="bg-background" />
+                        <Separator className="h-1" />
                     </Fragment>
                 ))}
             </ul>
