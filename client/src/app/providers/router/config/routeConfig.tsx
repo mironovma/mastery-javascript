@@ -1,11 +1,11 @@
+import { CategoryPage } from "@/pages/CategoryPage";
 import { MainPage } from "@/pages/MainPage";
-import { CardsCategoryPage, CardsPage } from "@/pages/CardsPage";
+
 import { NotFoundPage } from "@/pages/NotFoundPage";
 
 import {
     AppRoutes,
-    getRouteCards,
-    getRouteCardsCategory,
+    getCategories,
     getRouteMain,
     getRouteNotFound,
 } from "@/shared/const/router";
@@ -16,13 +16,9 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         path: getRouteMain(),
         element: <MainPage />,
     },
-    [AppRoutes.CARDS]: {
-        path: getRouteCards(),
-        element: <CardsPage />,
-    },
-    [AppRoutes.CARDS_CATEGORY]: {
-        path: getRouteCardsCategory(":id"),
-        element: <CardsCategoryPage />,
+    [AppRoutes.CATEGORIES]: {
+        path: getCategories(),
+        element: <CategoryPage />,
     },
 
     // Последним
