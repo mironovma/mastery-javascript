@@ -7,55 +7,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODO: НЕ хардкодить категории, а просто их ручками прописать в БД,
-// чтобы в будущем можно было через админку добавлять новые категории,
-// т.е. избавиться от enum и привязки к нему тут и ручками вписать названия категорий
-enum TaskCategoryName {
-  JavaScript
-  TypeScript
-  React
-  General
-  CssHtml
+model User {
+  id              String @id @default(uuid())
+  email           String @unique
+  password        String
+  isActivated     Boolean @default(false)
+  activationLink  String?
+  responses       UserResponse[]
+  token           Token?
 }
 
-enum TaskTypeName {
-  SingleAnswer
-  MultipleAnswer
-  TrueFalseAnswer
+model Token {
+  id           String @id @default(uuid())
+  refreshToken String
+  userId       String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
 }
 
-model TaskCategory {
-  id            String @id @default(uuid())
-  category      TaskCategoryName
-  tasks         Task[]
-
-  description   String?
-  href          TaskCategoryName?
-}
-
-model TaskType {
-  id            String @id @default(uuid())
-  type          TaskTypeName
-  tasks         Task[]
-
-  description   String?
-  href          TaskTypeName?
+model Category {
+  id           String @id @default(uuid())
+  name         String @unique
+  description  String?
+  tasks        Task[]
 }
 
 model Task {
   id            String @id @default(uuid())
   question      String
 
+  // Можно для одного вопроса вписывать сразу все три опции, а, в зависимости от эндпоинта (один-ответ, несколько, true/false) отрисовывать нужную карточку
   answerText    String?   // для карточек с одним ответов
   answerOptions Json?     // несколько вариантов ответов
   answerBoolean Boolean?  // для ответов true/false
 
   hint          String?
 
-  category      TaskCategory @relation(fields: [categoryId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id])
   categoryId    String
-  type          TaskType @relation(fields: [typeId], references: [id])
-  typeId        String
+
+  userResponse  UserResponse[]
+}
+
+model UserResponse {
+  id            String @id @default(uuid())
+  userId        String
+  taskId        String
+  knowsCount    Int @default(0) // сколько раз пользователь верно ответил
+  lastShowAt    DateTime @default(now()) // когда последний раз показывали карточку
+  status        ResponseStatus @default(REPEAT) // статус карточки: NEW, REPEAT, LEARNER
+  
+  user          User @relation(fields: [userId], references: [id])
+  task        Task @relation(fields: [taskId], references: [id])
+
+  @@unique([userId, taskId])
+}
+
+enum ResponseStatus {
+  NEW
+  REPEAT
+  LEARNED
 }
 
 // npx prisma generate
