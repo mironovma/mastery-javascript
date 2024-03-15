@@ -4,7 +4,7 @@ import { AppRouter } from "./providers/router";
 
 function App() {
     return (
-        <div>
+        <div className="max-w-7xl mx-auto">
             <Navbar className="px-4" />
             <AppRouter className="px-4" />
         </div>
