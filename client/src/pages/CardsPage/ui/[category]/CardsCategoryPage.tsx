@@ -1,13 +1,13 @@
 import { memo } from "react";
 import { useParams } from "react-router-dom";
 
-import { SingleCardTaskList } from "@/features/get-cards";
+// import { SingleCardTaskList } from "@/features/get-cards";
 import { TaskCategory } from "@/shared/types/tasks";
 import { CategoryToHeader } from "@/shared/const/categories";
 import { PageHeader } from "@/shared/ui/custom/page-header";
 
 const CardsCategoryPage = () => {
-    let { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>();
 
     return (
         <div className="my-4">
@@ -18,12 +18,12 @@ const CardsCategoryPage = () => {
             />
 
             <div className="flex justify-center items-center">
-                <SingleCardTaskList
+                {/* <SingleCardTaskList
                     className="w-full"
                     category={id as TaskCategory}
                     type="SingleAnswer"
                     limit={10}
-                />
+                /> */}
             </div>
 
             <h2 className="mt-4 text-lg font-semibold break-words text-muted-foreground">

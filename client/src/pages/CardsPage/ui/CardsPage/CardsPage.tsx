@@ -1,18 +1,18 @@
 import { memo } from "react";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 
-import { CategoryTaskList } from "@/entities/CategoryTaskList";
-import { fetchTaskCategories } from "@/entities/CategoryTaskList/api";
+// import { CategoryTaskList } from "@/entities/CategoryTaskList";
+// import { fetchTaskCategories } from "@/entities/CategoryTaskList/api";
 
 import { CardInfo } from "@/shared/ui/custom/card-info";
 import { PageHeader } from "@/shared/ui/custom/page-header";
-import { Skeleton } from "@/shared/ui/skeleton";
+// import { Skeleton } from "@/shared/ui/skeleton";
 
 const CardsPage = () => {
-    const { data: categories, isLoading } = useQuery(
-        "categories",
-        fetchTaskCategories
-    );
+    // const { data: categories, isLoading } = useQuery(
+    //     "categories",
+    //     fetchTaskCategories,
+    // );
 
     return (
         <div className="my-4">
@@ -34,7 +34,7 @@ const CardsPage = () => {
                     Категории
                 </h3>
 
-                {isLoading && (
+                {/* {isLoading && (
                     <div className="my-4">
                         <Skeleton className="w-full h-32 mt-3" />
                         <Skeleton className="w-full h-32 mt-3" />
@@ -44,6 +44,8 @@ const CardsPage = () => {
 
                 <ul className="my-4">
                     {categories && categories.length > 0 ? (
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+                        // @ts-ignore
                         categories.map(({ category, description, id }) => (
                             <CategoryTaskList
                                 key={id}
@@ -56,7 +58,7 @@ const CardsPage = () => {
                     ) : (
                         <li>Категории не найдены</li>
                     )}
-                </ul>
+                </ul> */}
             </div>
         </div>
     );

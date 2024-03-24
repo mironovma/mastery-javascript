@@ -1,13 +1,13 @@
 import { ModuleOptions } from "webpack";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-import type { BuildOption } from "./types";
-import { buildBabelLoader } from "./loaders/buildBabelLoader";
+import { BuildOptions } from "./types";
 
 export const buildLoaders = ({
     mode,
-    isDev,
-}: BuildOption): ModuleOptions["rules"] => {
+}: BuildOptions): ModuleOptions["rules"] => {
+    const isDev = mode === "development";
+
     const assetLoader = {
         test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
         type: "asset/resource",
@@ -63,7 +63,25 @@ export const buildLoaders = ({
         ],
     };
 
-    const babelLoader = buildBabelLoader(mode);
+    const babelLoader = {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+            loader: "babel-loader",
+            options: {
+                presets: [
+                    "@babel/preset-env",
+                    "@babel/preset-typescript",
+                    [
+                        "@babel/preset-react",
+                        {
+                            runtime: isDev ? "automatic" : "classic",
+                        },
+                    ],
+                ],
+            },
+        },
+    };
 
     return [assetLoader, svgLoader, cssLoader, babelLoader];
 };

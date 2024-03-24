@@ -1,30 +1,31 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-
-import { ThemeProvider } from "./app/providers/ThemeProvider";
 
 import App from "@/app/app";
+import { LangProvider } from "@/app/providers/lang-provider";
+import { ThemeProvider } from "@/app/providers/ThemeProvider";
+import { StoreMobxProvider } from "@/app/providers/store-mobx-provider";
 
 import "@/app/styles/index.scss";
+import "@/shared/config/i18n/i18n";
 
 const root = document.getElementById("root");
 
-if (!root) throw new Error("Root not found");
+if (!root) throw new Error("Root container doesn't exist");
 
 const container = createRoot(root);
 
-const queryClient = new QueryClient();
-
 container.render(
     <StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
+        <BrowserRouter>
+            <StoreMobxProvider>
                 <ThemeProvider>
-                    <App />
+                    <LangProvider>
+                        <App />
+                    </LangProvider>
                 </ThemeProvider>
-            </BrowserRouter>
-        </QueryClientProvider>
-    </StrictMode>
+            </StoreMobxProvider>
+        </BrowserRouter>
+    </StrictMode>,
 );

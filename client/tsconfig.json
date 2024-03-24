@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
+        "outDir": "./build",
         "noImplicitAny": true,
         "module": "ESNext",
-        "target": "ES6",
+        "target": "es6",
         "jsx": "react-jsx",
         "allowJs": true,
         "moduleResolution": "node",
-        "esModuleInterop": true,
         "strict": true,
         "allowSyntheticDefaultImports": true,
-        "isolatedModules": true,
+        "esModuleInterop": true,
 
         "baseUrl": ".",
         "paths": {

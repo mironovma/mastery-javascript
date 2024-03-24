@@ -1,10 +1,9 @@
-import { Fragment, memo } from "react";
 import { Separator } from "@radix-ui/react-separator";
+import { Fragment, memo } from "react";
 
-import defaultImage from "@/shared/assets/img/code.png";
 import { cn } from "@/shared/lib/utils";
+import defaultImage from "@/shared/assets/img/code.png";
 import { SectionHeader } from "@/shared/ui/custom/section-header";
-import { Checkbox } from "@/shared/ui/checkbox";
 
 const items = [
     {
@@ -27,7 +26,7 @@ const CategoryPage = memo(() => {
                     <Fragment key={item.header}>
                         <li
                             className={cn(
-                                "px-3 py-4 flex items-center justify-between cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 transition"
+                                "px-3 py-4 flex items-center justify-between cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 transition",
                             )}
                         >
                             <div className="flex items-center gap-2">
@@ -46,9 +45,7 @@ const CategoryPage = memo(() => {
                                     </p>
                                 </div>
                             </div>
-                            <div>
-                                <Checkbox />
-                            </div>
+                            <div>{/* <Checkbox /> */}чекбокс</div>
                         </li>
                         <Separator className="h-1" />
                     </Fragment>

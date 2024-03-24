@@ -1,36 +1,32 @@
-import webpack, { Configuration, DefinePlugin } from "webpack";
-import HTMLWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
+import CopyPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
-import type { BuildOption } from "./types";
+import { BuildOptions } from "./types";
 
 export const buildPlugins = ({
-    mode,
     paths,
-    analyzer,
-}: BuildOption): Configuration["plugins"] => {
+    mode,
+}: BuildOptions): webpack.Configuration["plugins"] => {
     const isDev = mode === "development";
     const isProd = mode === "production";
 
-    let plugins: Configuration["plugins"] = [
-        new HTMLWebpackPlugin({
+    const plugins = [
+        new HtmlWebpackPlugin({
+            minify: true,
             template: paths.html,
-            // favicon: path.resolve(__dirname, paths.public, "favicon.png"),
-            publicPath: "/",
         }),
-        new DefinePlugin({
-            __APP_NAME__: JSON.stringify(process.env.APP_NAME),
+        new webpack.DefinePlugin({
+            _APP_NAME: JSON.stringify(process.env.APP_NAME),
+            _API_URL_: JSON.stringify(process.env.API_URL),
         }),
+        new webpack.ProgressPlugin(),
     ];
 
     if (isDev) {
-        plugins.push(
-            new webpack.ProgressPlugin(),
-            new ForkTsCheckerWebpackPlugin()
-            // new ReactRefreshPlugin()
-        );
+        plugins.push(new ForkTsCheckerWebpackPlugin());
     }
 
     if (isProd) {
@@ -38,12 +34,13 @@ export const buildPlugins = ({
             new MiniCssExtractPlugin({
                 filename: "css/[name].[contenthash:8].css",
                 chunkFilename: "css/[name].[contenthash:8].css",
-            })
+            }),
+            new CopyPlugin({
+                patterns: [
+                    { from: paths.locales, to: `${paths.output}/locales` },
+                ],
+            }),
         );
-    }
-
-    if (analyzer) {
-        plugins.push(new BundleAnalyzerPlugin());
     }
 
     return plugins;

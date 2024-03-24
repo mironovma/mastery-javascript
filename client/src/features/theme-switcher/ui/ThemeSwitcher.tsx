@@ -1,8 +1,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 
-import { useTheme } from "@/app/providers/ThemeProvider";
-
 import { Switch } from "@/shared/ui/switch";
+import { useTheme } from "@/shared/hooks/useTheme";
 
 export const ThemeSwitcher = () => {
     const { theme, setTheme } = useTheme();
