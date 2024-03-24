@@ -1,4 +1,5 @@
 import webpack from "webpack";
+import Dotenv from "dotenv-webpack";
 import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -18,9 +19,9 @@ export const buildPlugins = ({
             minify: true,
             template: paths.html,
         }),
+        new Dotenv(),
         new webpack.DefinePlugin({
-            _APP_NAME: JSON.stringify(process.env.APP_NAME),
-            _API_URL_: JSON.stringify(process.env.API_URL),
+            _API_URL_: process.env.API_URL,
         }),
         new webpack.ProgressPlugin(),
     ];

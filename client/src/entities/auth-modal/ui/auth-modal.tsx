@@ -87,6 +87,9 @@ export const AuthModal = observer(
                                     ? "Зарегистрируйтесь!"
                                     : "Авторизируйтесь!"}
                             </Button>
+                            {/* {auth.error && (
+                                <div>{JSON.stringify(auth.error)}</div>
+                            )} */}
                         </DialogDescription>
                     </DialogContent>
                 </Dialog>

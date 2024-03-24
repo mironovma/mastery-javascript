@@ -4,7 +4,8 @@ import { AuthResponse } from "@/features/user-auth";
 
 const $api = axios.create({
     withCredentials: true,
-    baseURL: _API_URL_,
+    // TODO: разобраться, почему webpack не инициализирует глобальные переменные с помощью DefinePlugins
+    baseURL: _API_URL_ || process.env.API_URL,
 });
 
 $api.interceptors.request.use((config) => {
@@ -28,7 +29,7 @@ $api.interceptors.response.use(
 
             try {
                 const response = await axios.get<AuthResponse>(
-                    `${_API_URL_}/refresh`,
+                    `${_API_URL_ || process.env.API_URL}/refresh`,
                     {
                         withCredentials: true,
                     },

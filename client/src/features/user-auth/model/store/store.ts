@@ -10,6 +10,7 @@ export class AuthUserStore {
     user = {} as User;
     isAuth = false;
     isLoading = false;
+    error = {};
 
     constructor() {
         makeAutoObservable(this);
@@ -28,6 +29,10 @@ export class AuthUserStore {
     // Синхронный action
     setIsLoading(bool: boolean) {
         this.isLoading = bool;
+    }
+
+    setError(error: unknown) {
+        this.error = { error };
     }
 
     // Асинхронный action на авторизацию
@@ -51,7 +56,7 @@ export class AuthUserStore {
             this.setUser(response.data.user);
         } catch (error) {
             console.log(error);
-
+            this.setError(error);
             return {
                 error,
             };
@@ -120,7 +125,7 @@ export class AuthUserStore {
         this.setIsLoading(true);
         try {
             const response = await axios.get<AuthResponse>(
-                `${_API_URL_}/refresh`,
+                `${_API_URL_ || process.env.API_URL}/refresh`,
                 // Используем withCredetials, чтобы сразу отправлять куки с запросом
                 { withCredentials: true },
             );
