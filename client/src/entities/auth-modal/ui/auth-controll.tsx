@@ -16,7 +16,7 @@ interface AuthControllProps {
     email: string;
     // TODO: добавить возможность грузить в ЛК пользователя фотографию
     userImage?: string;
-    onLogout: () => Promise<any>;
+    onLogout: () => void;
 }
 
 export const AuthControll = ({

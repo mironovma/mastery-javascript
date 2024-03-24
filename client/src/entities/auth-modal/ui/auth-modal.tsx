@@ -35,30 +35,28 @@ interface SubmitFunc {
 interface AuthModalProps {
     className?: string;
     trigger?: ReactNode;
+    open?: boolean;
     onSubmit: SubmitFunc;
 }
-// TODO: в этом же компоненте сделать две формы: на регистрацию и авторизацию
-// обе запихиваю в authmodal
-// по локальному состоянию переключаю либо на рег, либо на лог
-// разные схемы валидации
-// и далее на сервере делаю возможность передачи еще username
 
 export const AuthModal = observer(
-    ({ className, trigger, onSubmit }: AuthModalProps) => {
+    ({ className, trigger, open, onSubmit }: AuthModalProps) => {
         const { auth } = useMobxStore();
 
         const [isRegistration, setIsRegistration] = useState<boolean>(false);
 
         return (
             <div className={className}>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        {trigger ?? (
-                            <Button className="text-white" variant="link">
-                                Вход и регистрация
-                            </Button>
-                        )}
-                    </DialogTrigger>
+                <Dialog defaultOpen={open}>
+                    {!open && (
+                        <DialogTrigger asChild>
+                            {trigger ?? (
+                                <Button className="text-white" variant="link">
+                                    Вход и регистрация
+                                </Button>
+                            )}
+                        </DialogTrigger>
+                    )}
                     <DialogContent>
                         {isRegistration ? (
                             <RegistrationModal
@@ -87,9 +85,6 @@ export const AuthModal = observer(
                                     ? "Зарегистрируйтесь!"
                                     : "Авторизируйтесь!"}
                             </Button>
-                            {/* {auth.error && (
-                                <div>{JSON.stringify(auth.error)}</div>
-                            )} */}
                         </DialogDescription>
                     </DialogContent>
                 </Dialog>

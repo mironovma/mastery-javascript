@@ -6,25 +6,27 @@ import { AuthControll, AuthModal } from "@/entities/auth-modal";
 
 import { cn } from "@/shared/lib/utils";
 import { useMobxStore } from "@/shared/hooks/useMobxStore";
+
 import { RegistrationSchema } from "@/entities/auth-modal/model/schema";
 
 interface AuthUserProps {
     className?: string;
+    open?: boolean;
 }
 
-export const AuthUser = observer(({ className }: AuthUserProps) => {
+export const AuthUser = observer(({ className, open }: AuthUserProps) => {
     const { auth } = useMobxStore();
     const navigate = useNavigate();
 
-    const onLogin = (values: { email: string; password: string }) =>
+    const onLogin = (values: { email: string; password: string }) => {
         auth.login(values.email, values.password);
-    // Редиректим на страницу пользователя (защищенный роут)
-    navigate("/app");
+        navigate("/");
+    };
 
-    const onRegistration = (values: z.infer<typeof RegistrationSchema>) =>
+    const onRegistration = (values: z.infer<typeof RegistrationSchema>) => {
         auth.registration(values.email, values.password, values.username ?? "");
-    // Редиректим на страницу пользователя (защищенный роут)
-    navigate("/app");
+        navigate("/");
+    };
 
     return (
         <div className={cn("", className)}>
@@ -32,10 +34,13 @@ export const AuthUser = observer(({ className }: AuthUserProps) => {
                 <AuthControll
                     username={auth.user.username}
                     email={auth.user.email}
-                    onLogout={() => auth.logout()}
+                    onLogout={() => {
+                        auth.logout();
+                        navigate("/");
+                    }}
                 />
             ) : (
-                <AuthModal onSubmit={{ onLogin, onRegistration }} />
+                <AuthModal open={open} onSubmit={{ onLogin, onRegistration }} />
             )}
         </div>
     );
