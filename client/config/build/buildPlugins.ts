@@ -1,5 +1,4 @@
 import webpack from "webpack";
-import Dotenv from "dotenv-webpack";
 import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -19,10 +18,6 @@ export const buildPlugins = ({
             minify: true,
             template: paths.html,
         }),
-        new Dotenv(),
-        new webpack.DefinePlugin({
-            _API_URL_: process.env.API_URL,
-        }),
         new webpack.ProgressPlugin(),
     ];
 
@@ -40,7 +35,7 @@ export const buildPlugins = ({
                 patterns: [
                     { from: paths.locales, to: `${paths.output}/locales` },
                 ],
-            }),
+            })
         );
     }
 

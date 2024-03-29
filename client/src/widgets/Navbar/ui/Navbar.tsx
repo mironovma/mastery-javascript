@@ -28,7 +28,7 @@ export const Navbar = memo(({ className }: NavbarProps) => {
         <menu
             className={cn(
                 "w-full h-14 px-3 bg-sky-700 dark:bg-slate-900 flex justify-between items-center",
-                className
+                className,
             )}
         >
             <Sheet>

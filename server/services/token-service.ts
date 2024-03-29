@@ -7,7 +7,10 @@ class TokenService {
     // Генерируем access и refresh токенов для user
     generateTokens(
         // payload - нечувствительные данные о пользователе (данные, которые вшиваются в токен)
-        payload: Omit<User, "password" | "activationLink" | "name">
+        payload: Omit<
+            User,
+            "password" | "activationLink" | "restorePasswordCode"
+        >
     ) {
         // Генерация access токена
 

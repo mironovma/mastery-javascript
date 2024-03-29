@@ -8,6 +8,8 @@ import nodemailer from "nodemailer";
  * Используем сервер для исходящей почту (SMTP) и получаем все необходимые настройки.
  */
 
+// TODO: починить MailService. Сейчас Gmail запретил использовать свой SMTP
+
 class MailService {
     // Создаем transporter с помощью которого и будем отправлять письма с подтверждением регистрации
     transporter;
@@ -48,6 +50,23 @@ class MailService {
                         <a href="${link}">${link}</a>
                     </div>
                 `,
+        });
+    }
+
+    async sendRestorePasswordCodeMail(to: string, code: string) {
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: `Восстановление пароля на ${process.env.CLIENT_URL}`,
+            text: "",
+            html: `
+                <div>
+                    <h1>Восстановление пароля</h1>
+                    <p>Для сброса старого пароля введите этот код: </p>
+                    <h2>${code}</h2>
+                    <p>Вы не запрашивали изменение пароля? Смело игнорируйте это сообщение.</p>
+                </div>
+            `,
         });
     }
 }

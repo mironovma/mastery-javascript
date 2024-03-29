@@ -22,6 +22,23 @@ userRouter.post(
 userRouter.post("/login", userController.login);
 // Эндпоинт для деаутентификации
 userRouter.post("/logout", userController.logout);
+// Эндпоинты для восстановления пароля
+// Отправляем и записываем в БД 6-значный код для восстановления
+userRouter.post(
+    "/forgot-password/send-code",
+    userController.forgotPasswordSendCode
+);
+// Проверяем 6-значный код в следующем инпуте
+userRouter.post(
+    "/forgot-password/check-code",
+    userController.forgotPasswordAcceptCode
+);
+// Вводим новый пароль в следующем инпуте, хешируем и сохраняем его
+// TODO: сделать валидацию длины пароля
+userRouter.post(
+    "/forgot-password/set-new-password",
+    userController.forgotPasswordSetNewPassword
+);
 // Эндпоинт для активации аккаунта по ссылке, которая будет приходить на почту пользователя
 userRouter.get("/activate/:link", userController.activate);
 // Эндпоинт для обновления access токена, если он умер (отправляем refresh токен и получаем новую пару access и refresh токенов)

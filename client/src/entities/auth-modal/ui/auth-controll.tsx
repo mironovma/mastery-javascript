@@ -44,7 +44,7 @@ export const AuthControll = ({
                 <DropdownMenuContent>
                     <DropdownMenuLabel className="min-w-32">
                         <p className="px-2 py-1 text-sm text-muted-foreground text-center">
-                            @{!username ? email.split("@")[0] : username}
+                            @{username}
                         </p>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />

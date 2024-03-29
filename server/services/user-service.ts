@@ -21,7 +21,7 @@ class UserService {
         // ... и, если уже есть пользователь с таким же email, то выкидываем ошибку.
         if (user) {
             throw ApiError.BadRequest(
-                `Пользователя с email ${email} уже существует`
+                `Пользователь с email ${email} уже существует`
             );
         }
 
@@ -34,13 +34,20 @@ class UserService {
         // Генерируем рандомную строку с помощью uuid, которая далее будет линком для активации аккаунта
         const activationLink = v4();
 
+        // Если username не задан, то присваиваем дефолтный username
+        let defaultUsername = null;
+        if (!username) {
+            const countUsers = await db.user.count();
+            defaultUsername = `user${100 + countUsers}`;
+        }
+
         // Создаем пользователя
         const newUser = await db.user.create({
             data: {
                 email,
                 password: hashPassword,
+                username: username || defaultUsername,
                 activationLink,
-                username,
             },
         });
 
@@ -91,6 +98,115 @@ class UserService {
         });
     }
 
+    // Восстановление пароля
+    // Отправляем и записываем 6-значный код
+    async forgotPasswordSetCode(email: string) {
+        // Проверяем есть ли такой зарегистрированный пользователь в БД
+        const user = await db.user.findUnique({
+            where: {
+                email,
+            },
+        });
+
+        if (!user) {
+            throw ApiError.BadRequest(
+                "Пользователя с таким email не существует"
+            );
+        }
+
+        // Генерируем 6-значный код для смены пароля
+        const restorePasswordCode = String(
+            Math.floor(100000 + Math.random() * 900000)
+        );
+
+        // Записываем в БД код
+        // Далее его на клиенте вписываем в инпут и в другом контроллере+сервисе будем перезаписывать новый пароль
+        await db.user.update({
+            data: {
+                restorePasswordCode,
+            },
+            where: {
+                email,
+            },
+        });
+
+        // Отправляем на почту 6-значный код
+        // await mailService.sendRestorePasswordCodeMail(
+        //     email,
+        //     restorePasswordCode
+        // );
+
+        // Через 5 минут удаляем код из БД
+        setTimeout(async () => {
+            await db.user.update({
+                where: {
+                    email,
+                },
+                data: {
+                    restorePasswordCode: null,
+                },
+            });
+        }, 30000);
+
+        return { message: "Код для восстановления пароля отправлен на почту" };
+    }
+
+    // Восстановление пароля
+    // Проверяем введенный пароль
+    async forgotPasswordAcceptCode(email: string, code: string) {
+        // Проверяю есть ли вообще код в БД. Если нет, то никто не запрашивал смену пароля
+        // Плюс: если отправить просто email и пустой код без этой проверки, то
+        // можно будет получить доступ к смене пароля к любому аккаунту, т.к. по-дефолту в БД у пользователя нет кода на восстановление
+        if (!code) {
+            throw ApiError.BadRequest(
+                "Пользователь не запрашивал восстановление пароля или указан неверный код"
+            );
+        }
+
+        // Проверяем есть ли такой пользователь по коду и email
+        // Двойная проверка
+        const user = await db.user.findUnique({
+            where: {
+                email,
+                restorePasswordCode: code,
+            },
+        });
+
+        // Если такого пользователя нет или код не запрашивался, то:
+        if (!user) {
+            throw ApiError.BadRequest(
+                "Пользователь не запрашивал восстановление пароля или указан неверный код"
+            );
+        }
+
+        // Если такой пользователь есть, то пропускаем далее
+        return { message: "Придумайте новый пароль" };
+    }
+
+    // Восстановление пароля
+    // Устанавливаем новый пароль
+    async forgotPasswordSetNewPassword(email: string, password: string) {
+        // Хешируем пароль
+        const hashPassword = await bcrypt.hash(password, 5);
+
+        // Перезаписываем пароль на новый
+        // И удаляем код для восстановления пароля из БД
+        await db.user.update({
+            where: {
+                email,
+            },
+            data: {
+                password: hashPassword,
+                restorePasswordCode: null,
+            },
+        });
+
+        return {
+            message:
+                "Новый пароль установлен успешно! Пройдите авторизацию с новым паролем!",
+        };
+    }
+
     // Авторизация
     async login(email: string, password: string) {
         // Ищем пользователя с таким email
@@ -103,7 +219,7 @@ class UserService {
         // Если такого нет, значит, он не зарегистрирован и выкидываем ошибку.
         if (!user) {
             throw ApiError.BadRequest(
-                "Пользователь с таким email не существует"
+                "Пользователя с таким email не существует"
             );
         }
 
@@ -173,6 +289,7 @@ class UserService {
             email: user.email,
             username: user.username,
             isActivated: user.isActivated,
+            registrationDate: user.registrationDate,
         });
         const tokens = tokenService.generateTokens({ ...userDto });
         await tokenService.saveToken(userDto.id, tokens.refreshToken);

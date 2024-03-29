@@ -4,7 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "@/app/app";
 import { LangProvider } from "@/app/providers/lang-provider";
-import { ThemeProvider } from "@/app/providers/ThemeProvider";
+import { ThemeProvider } from "@/app/providers/theme-provider";
+// mobx provider - TODO: оставить в качестве примера, но закоментировать и переделать на Redux
 import { StoreMobxProvider } from "@/app/providers/store-mobx-provider";
 
 import "@/app/styles/index.scss";

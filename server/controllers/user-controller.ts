@@ -127,6 +127,70 @@ class UserController {
         }
     }
 
+    // Восстановление пароля
+    // Отправляем и записываем 6-значный код
+    async forgotPasswordSendCode(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        try {
+            // Получаем с клиента email
+            const { email } = req.body;
+
+            await userService.forgotPasswordSetCode(email);
+
+            // Возвращаем email, как ответ от сервера (хотя можно было бы отправить просто сообщение об успешной отправке пароля)
+            return res.json({
+                message: "Код для восстановления пароля отправлен на почту",
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // Восстановление пароля
+    // Проверяем 6-значный код в следующем инпуте
+    async forgotPasswordAcceptCode(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        try {
+            // Получаем с клиента 6-значный код. email храним в локальном стейте
+            const { email, code } = req.body;
+
+            await userService.forgotPasswordAcceptCode(email, code);
+
+            return res.json({ message: "Придумайте новый пароль" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // Восстановление пароля
+    // Устанавливаем новый пароль
+    // На клиенте делаем проверку: два раза попросить ввести пароль
+    async forgotPasswordSetNewPassword(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        try {
+            // Получаем email и пароль. email храним в локальном стейте
+            const { email, password } = req.body;
+
+            await userService.forgotPasswordSetNewPassword(email, password);
+
+            return res.json({
+                message:
+                    "Новый пароль установлен успешно! Пройдите авторизацию с новым паролем!",
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     // Функция, которая будет отрабатывать по роуту /refresh
     async refresh(req: Request, res: Response, next: NextFunction) {
         try {

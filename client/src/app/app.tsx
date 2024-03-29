@@ -1,5 +1,6 @@
-import { Suspense, useEffect } from "react";
+import { Toaster, toast } from "sonner";
 import { observer } from "mobx-react-lite";
+import { Suspense, useEffect } from "react";
 
 import { AppRouter } from "@/app/providers/router";
 import { Navbar } from "@/widgets/navbar";
@@ -18,12 +19,27 @@ export default observer(function App() {
         }
     }, [auth]);
 
+    if (auth.error) {
+        // TODO: сделать нотификацию для 500 ошибки, когда сервер не отвечает / отклоняет запрос
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        toast.error(auth.error.response?.data?.message, {
+            position: "bottom-center",
+        });
+    }
+
+    if (auth.successMessage) {
+        toast.success(auth.successMessage, {
+            position: "bottom-center",
+        });
+    }
+
     return (
         <Suspense fallback="">
             <div className="min-h-dvh">
                 <Navbar />
                 <AppRouter />
             </div>
+            <Toaster richColors />
         </Suspense>
     );
 });

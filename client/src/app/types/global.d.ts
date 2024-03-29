@@ -10,7 +10,7 @@ declare module "*.svg" {
     export default content;
 }
 
-declare const _API_URL_: string;
+// declare const __APP_NAME__: string;
 
 type DeepPartial<T> = T extends object
     ? {

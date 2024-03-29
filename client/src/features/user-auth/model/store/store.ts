@@ -2,15 +2,22 @@ import { makeAutoObservable } from "mobx";
 import axios from "axios";
 
 import { User } from "@/features/user-auth";
-import $api from "@/shared/api/api";
+import $api, { API_URL } from "@/shared/api/api";
 
 import { AuthResponse } from "../types";
+
+type ResetPasswordState = "idle" | "confirmCode" | "awaitingNewPassword";
 
 export class AuthUserStore {
     user = {} as User;
     isAuth = false;
     isLoading = false;
-    error = {};
+    successMessage: string | null = null;
+    error: any | null = null;
+
+    // Восстановление пароля
+    resetPasswordEmail = "";
+    resetPasswordState: ResetPasswordState = "idle";
 
     constructor() {
         makeAutoObservable(this);
@@ -21,23 +28,35 @@ export class AuthUserStore {
         this.isAuth = bool;
     }
 
-    // Синхронный action
     setUser(user: User) {
         this.user = user;
     }
 
-    // Синхронный action
     setIsLoading(bool: boolean) {
         this.isLoading = bool;
     }
 
+    setSuccessMessage(message: string | null) {
+        this.successMessage = message;
+    }
+
     setError(error: unknown) {
-        this.error = { error };
+        this.error = error;
+    }
+
+    // Восстановление пароля
+    setResetPasswordEmail(email: string) {
+        this.resetPasswordEmail = email;
+    }
+
+    setResetPasswordState(state: ResetPasswordState) {
+        this.resetPasswordState = state;
     }
 
     // Асинхронный action на авторизацию
     async login(email: string, password: string) {
         this.setIsLoading(true);
+        this.setError(null);
         try {
             const response = await $api.post<AuthResponse>("/login", {
                 email,
@@ -56,6 +75,7 @@ export class AuthUserStore {
             this.setUser(response.data.user);
         } catch (error) {
             console.log(error);
+
             this.setError(error);
             return {
                 error,
@@ -68,6 +88,7 @@ export class AuthUserStore {
     // Асинхронный action на регистрацию
     async registration(email: string, password: string, username: string) {
         this.setIsLoading(true);
+        this.setError(null);
         try {
             const response = await $api.post<AuthResponse>("/registration", {
                 email,
@@ -87,6 +108,7 @@ export class AuthUserStore {
         } catch (error) {
             console.log(error);
 
+            this.setError(error);
             return {
                 error,
             };
@@ -125,7 +147,7 @@ export class AuthUserStore {
         this.setIsLoading(true);
         try {
             const response = await axios.get<AuthResponse>(
-                `${_API_URL_ || process.env.API_URL}/refresh`,
+                `${API_URL}/refresh`,
                 // Используем withCredetials, чтобы сразу отправлять куки с запросом
                 { withCredentials: true },
             );
@@ -142,6 +164,89 @@ export class AuthUserStore {
         } catch (error) {
             console.log(error);
 
+            return {
+                error,
+            };
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    // Отправляем код для восстановления пароля
+    // Сохраняем email в стейт
+    async forgotPasswordSendCode(email: string) {
+        this.setIsLoading(true);
+        this.setError(null);
+        this.setSuccessMessage(null);
+        try {
+            this.setResetPasswordEmail(email);
+            const response = await $api.post("/forgot-password/send-code", {
+                email,
+            });
+
+            console.log(response);
+
+            this.setSuccessMessage(response.data.message as string);
+            this.setResetPasswordState("confirmCode");
+            return response.data;
+        } catch (error) {
+            this.setError(error);
+            console.log(error);
+            return {
+                error,
+            };
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    // Отправляем код на проверку
+    async forgotPasswordConfirmCode(email: string, code: string) {
+        this.setIsLoading(true);
+        this.setError(null);
+        this.setSuccessMessage(null);
+        try {
+            const response = await $api.post("/forgot-password/check-code", {
+                email,
+                code,
+            });
+
+            console.log(response);
+
+            this.setSuccessMessage(response.data.message as string);
+            this.setResetPasswordState("awaitingNewPassword");
+            return response.data;
+        } catch (error) {
+            this.setError(error);
+            console.log(error);
+            return {
+                error,
+            };
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    // Устанавливаем новый пароль
+    async forgotPasswordSetPassword(email: string, password: string) {
+        this.setIsLoading(true);
+        this.setError(null);
+        this.setSuccessMessage(null);
+        try {
+            const response = await $api.post(
+                "/forgot-password/set-new-password",
+                {
+                    email,
+                    password,
+                },
+            );
+
+            console.log(response);
+
+            this.setSuccessMessage(response.data.message as string);
+        } catch (error) {
+            this.setError(error);
+            console.log(error);
             return {
                 error,
             };

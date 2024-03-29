@@ -8,11 +8,15 @@ export class UserDto {
     email: string;
     username: string | null;
     isActivated: boolean;
+    registrationDate: Date;
 
-    constructor(model: Omit<User, "activationLink" | "password">) {
+    constructor(
+        model: Omit<User, "activationLink" | "password" | "restorePasswordCode">
+    ) {
         this.id = model.id;
         this.email = model.email;
         this.username = model.username;
         this.isActivated = model.isActivated;
+        this.registrationDate = model.registrationDate;
     }
 }
