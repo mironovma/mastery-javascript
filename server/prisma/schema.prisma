@@ -17,17 +17,77 @@ model User {
   restorePasswordCode String?
   registrationDate    DateTime @default(now())
   token               Token?
+
+  userCards           UserCard[]
+  userCategories      UserCategory[]
+  userStatistics      UserStatistics[]
 }
 
 model Token {
-  id           String @id @default(uuid())
-  refreshToken String
-  userId       String
+  id                  String @id @default(uuid())
+  refreshToken        String
+  userId              String
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
 }
+
+model Category {
+  id                  String @id @default(uuid())
+  name                String @unique
+  description         String?
+  cards               Card[]
+  users               UserCategory[]
+}
+
+model Card {
+  id                  String @id @default(uuid())
+  question            String
+  shortAnswer         String
+  detailedAnswer      String?
+  options             Json? // для хранения массива вариантов ответа
+  categoryId          String
+  category            Category  @relation(fields: [categoryId], references: [id])
+  userCards           UserCard[]
+}
+
+model UserCategory {
+  id                  String @id @default(uuid())
+  userId              String
+  categoryId          String
+  user                User @relation(fields: [userId], references: [id])
+  category            Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([userId, categoryId])
+}
+
+model UserCard {
+  id                  String   @id @default(uuid())
+  userId              String
+  cardId              String
+  status              String   // ["learning", "known"]
+  nextReview          DateTime
+  reviewCount         Int      @default(0)
+  user                User     @relation(fields: [userId], references: [id])
+  card                Card     @relation(fields: [cardId], references: [id])
+
+  @@unique([userId, cardId])
+}
+
+model UserStatistics {
+  id                  String   @id @default(uuid())
+  userId              String
+  date                DateTime @default(now())
+  newCards            Int      @default(0)
+  repeatedCards       Int      @default(0)
+  learnedCards        Int      @default(0)
+  user                User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
+}
+
+
 
 // npx prisma generate
 // npx prisma db push

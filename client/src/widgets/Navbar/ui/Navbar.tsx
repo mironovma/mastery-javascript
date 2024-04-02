@@ -57,7 +57,7 @@ export const Navbar = memo(({ className }: NavbarProps) => {
                                 </li>
                                 <li>
                                     <SheetClose asChild>
-                                        <Link to="/about">{t("О нас")}</Link>
+                                        <Link to="/app">{t("Приложение")}</Link>
                                     </SheetClose>
                                 </li>
                             </ul>
@@ -71,7 +71,7 @@ export const Navbar = memo(({ className }: NavbarProps) => {
 
             <div className="flex-1 flex justify-center">
                 <h1>
-                    <span className="text-sky-700">
+                    <span className="dark:text-sky-700 text-white">
                         {t("APP_NAME").slice(0, 2)}
                     </span>
                     <span>{t("APP_NAME").slice(2)}</span>

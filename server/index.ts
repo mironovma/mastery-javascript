@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import userRouter from "./routes/user";
+import cardRouter from "./routes/card";
+import categoryRouter from "./routes/category";
 import { middlewareAuth } from "./middleware/auth-middleware";
 import { middlewareError } from "./middleware/error-middleware";
 
@@ -26,6 +28,8 @@ app.use(
 );
 
 app.use("/api", userRouter);
+app.use("/api", cardRouter);
+app.use("/api", categoryRouter);
 
 // Все мидлварены для обработки ошибок всегда подключаем в конце
 app.use(middlewareError);

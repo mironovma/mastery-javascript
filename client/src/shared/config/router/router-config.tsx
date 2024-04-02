@@ -1,8 +1,10 @@
 import { RouteProps } from "react-router-dom";
 
-import { AboutPage } from "@/pages/about-page";
 import { MainPage } from "@/pages/main-page";
 import { AuthorizationPage } from "@/pages/authorization-page";
+
+import { AppPage } from "@/pages/app-page";
+import { AppCategoryPage } from "@/pages/app-category-page";
 
 export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
     authOnly?: boolean;
@@ -10,16 +12,18 @@ export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
 
 export enum AppRoutes {
     MAIN = "main",
-    ABOUT = "about",
     AUTHORIZATION = "authorization",
+    APP = "app",
+    APP_CATEGORY = "app-category",
 
     NOT_FOUND = "not-found",
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: "/",
-    [AppRoutes.ABOUT]: "/about",
     [AppRoutes.AUTHORIZATION]: "/authorization",
+    [AppRoutes.APP]: "/app",
+    [AppRoutes.APP_CATEGORY]: "/app/category",
 
     [AppRoutes.NOT_FOUND]: "/*",
 };
@@ -29,14 +33,19 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
         path: RoutePath.main,
         element: <MainPage />,
     },
-    [AppRoutes.ABOUT]: {
-        path: RoutePath.about,
-        element: <AboutPage />,
-        authOnly: true,
-    },
     [AppRoutes.AUTHORIZATION]: {
         path: RoutePath.authorization,
         element: <AuthorizationPage />,
+    },
+    [AppRoutes.APP]: {
+        path: RoutePath.app,
+        element: <AppPage />,
+        // authOnly: true,
+    },
+    [AppRoutes.APP_CATEGORY]: {
+        path: RoutePath["app-category"],
+        element: <AppCategoryPage />,
+        // authOnly: true,
     },
 
     [AppRoutes.NOT_FOUND]: {
