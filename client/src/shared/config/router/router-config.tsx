@@ -40,12 +40,12 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.APP]: {
         path: RoutePath.app,
         element: <AppPage />,
-        // authOnly: true,
+        authOnly: true,
     },
     [AppRoutes.APP_CATEGORY]: {
         path: RoutePath["app-category"],
         element: <AppCategoryPage />,
-        // authOnly: true,
+        authOnly: true,
     },
 
     [AppRoutes.NOT_FOUND]: {
