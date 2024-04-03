@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect } from "react";
+import { memo, useEffect } from "react";
 
 import { AuthUser } from "@/features/user-auth";
 import { useMobxStore } from "@/shared/hooks/useMobxStore";
@@ -7,7 +7,7 @@ import { toast } from "sonner";
 const AuthorizationPage = () => {
     const { auth } = useMobxStore();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         let timerId: NodeJS.Timeout;
         if (auth.isAuth) {
             toast.info("Вы уже авторизованы", { position: "bottom-center" });
