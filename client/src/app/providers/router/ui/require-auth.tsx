@@ -19,7 +19,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     useEffect(() => {
         const timerId = setTimeout(() => {
             setIsChecking(false);
-        }, 50);
+        }, 100);
 
         return () => clearTimeout(timerId);
     }, [auth.isAuth, auth.isLoading]);

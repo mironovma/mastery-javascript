@@ -45,7 +45,7 @@ export const CardCategory = observer(
                     </SectionMenuItemText>
                     <input
                         type="checkbox"
-                        className="ml-auto"
+                        className="ml-auto w-5 h-5 checked:accent-sky-700"
                         checked={isCheckedInput}
                         onChange={onChange}
                     />

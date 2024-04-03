@@ -1,9 +1,9 @@
 import { memo } from "react";
 
-import { CardCategoriesList } from "@/features/card-category";
+import { CardCategoryList } from "@/features/card-category";
 
 const AppCategoryPage = () => {
-    return <CardCategoriesList />;
+    return <CardCategoryList />;
 };
 
 export default memo(AppCategoryPage);

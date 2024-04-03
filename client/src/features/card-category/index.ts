@@ -1,2 +1,2 @@
 export { CardCategoryStore } from "./model/store/store";
-export { CardCategoriesList } from "./ui/card-categories-list";
+export { CardCategoryList } from "./ui/card-category-list";

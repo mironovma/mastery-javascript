@@ -10,7 +10,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 
 import { Category } from "../model/types";
 
-export const CardCategoriesList = observer(() => {
+export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
 
     const [categoryList, setCategoryList] = useState<Category[]>([]);
