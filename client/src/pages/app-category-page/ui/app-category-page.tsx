@@ -1,5 +1,6 @@
-import { CardCategoriesList } from "@/features/card-category";
 import { memo } from "react";
+
+import { CardCategoriesList } from "@/features/card-category";
 
 const AppCategoryPage = () => {
     return <CardCategoriesList />;
