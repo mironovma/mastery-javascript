@@ -8,6 +8,7 @@ export class CardCategoryStore {
     categories = [] as Category[];
     userCategories = [] as Category[];
     isLoading = false;
+    successMessage: string | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -19,6 +20,10 @@ export class CardCategoryStore {
 
     setIsLoading(bool: boolean) {
         this.isLoading = bool;
+    }
+
+    setSuccessMessage(message: string | null) {
+        this.successMessage = message;
     }
 
     setCategory(categories: Category[]) {
@@ -36,8 +41,6 @@ export class CardCategoryStore {
 
             this.setCategory(response.data);
         } catch (error) {
-            console.log(error);
-
             return {
                 error,
             };
@@ -55,8 +58,24 @@ export class CardCategoryStore {
 
             this.setUserCategory(response.data);
         } catch (error) {
-            console.log(error);
+            return {
+                error,
+            };
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
 
+    async setUserCategories(userId: string, categories: Category[]) {
+        this.setIsLoading(true);
+        this.setSuccessMessage(null);
+        try {
+            const response = await $api.post(`/categories/${userId}`, {
+                categories,
+            });
+
+            this.setSuccessMessage(response.data.message as string);
+        } catch (error) {
             return {
                 error,
             };

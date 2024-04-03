@@ -1,5 +1,6 @@
+import { ChangeEvent, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { Code2Icon } from "lucide-react";
-import { memo } from "react";
 
 import {
     SectionMenuWrapper,
@@ -8,25 +9,30 @@ import {
     SectionMenuItemTitle,
     SectionMenuItemDescription,
 } from "@/shared/ui/custom/section-menu";
-import { Checkbox } from "@/shared/ui/checkbox";
 
 interface CardCategoryProps {
     className?: string;
     name: string;
     description?: string;
 
-    isSelected?: boolean;
-    onSelect: () => void;
+    isChecked: boolean;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const CardCategory = memo(
+export const CardCategory = observer(
     ({
         className,
         name,
         description,
-        isSelected,
-        onSelect,
+        isChecked,
+        onChange,
     }: CardCategoryProps) => {
+        const [isCheckedInput, setIsCheckedInput] = useState<boolean>(false);
+
+        useEffect(() => {
+            setIsCheckedInput(isChecked);
+        }, [isChecked]);
+
         return (
             <SectionMenuWrapper className={className}>
                 <SectionMenuItem to={""}>
@@ -37,10 +43,11 @@ export const CardCategory = memo(
                             {description}
                         </SectionMenuItemDescription>
                     </SectionMenuItemText>
-                    <Checkbox
+                    <input
+                        type="checkbox"
                         className="ml-auto"
-                        checked={isSelected}
-                        onChange={onSelect}
+                        checked={isCheckedInput}
+                        onChange={onChange}
                     />
                 </SectionMenuItem>
             </SectionMenuWrapper>

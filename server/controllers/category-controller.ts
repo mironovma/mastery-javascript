@@ -24,6 +24,25 @@ class CategoryController {
             next(error);
         }
     }
+
+    async setUserCategories(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params;
+            const { categories } = req.body;
+
+            const userCategories = await categoryService.setUserCategories(
+                userId,
+                categories
+            );
+
+            return res.json({
+                userCategories,
+                message: "Список категорий изменен",
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const categoryController = new CategoryController();

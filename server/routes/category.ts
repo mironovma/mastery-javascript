@@ -8,4 +8,9 @@ categoryRouter.get("/categories", categoryController.getCategories);
 
 categoryRouter.get("/categories/:userId", categoryController.getUserCategories);
 
+categoryRouter.post(
+    "/categories/:userId",
+    categoryController.setUserCategories
+);
+
 export default categoryRouter;
