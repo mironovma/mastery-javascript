@@ -1,4 +1,4 @@
-import { Card } from "@/entities/card";
+import { Card } from "./card";
 
 export interface Category {
     id: string;

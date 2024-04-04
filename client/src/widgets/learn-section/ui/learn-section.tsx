@@ -1,5 +1,6 @@
-import { LearnBlock } from "@/entities/learn-block";
 import { memo } from "react";
+
+import { LearnBlock } from "@/entities/learn-block";
 
 export const LearnSection = memo(() => {
     return (

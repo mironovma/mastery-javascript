@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { observer } from "mobx-react-lite";
 import { PencilIcon, CirclePlusIcon, HistoryIcon, ZapIcon } from "lucide-react";
 
 import {
@@ -9,8 +10,12 @@ import {
     SectionMenuItemTitle,
     SectionMenuItemDescription,
 } from "@/shared/ui/custom/section-menu";
+import { useCategories } from "@/shared/hooks/useCategories";
 
-export const LearnBlock = memo(() => {
+export const LearnBlock = observer(() => {
+    const { t } = useTranslation();
+    const { userCategories } = useCategories();
+
     return (
         <div>
             <SectionMenuHeader>Изучение новых карточек</SectionMenuHeader>
@@ -22,13 +27,16 @@ export const LearnBlock = memo(() => {
                     <PencilIcon className="text-gray-400" />
                     <SectionMenuItemText>
                         <SectionMenuItemTitle>
-                            14 категорий выбрано
+                            {t("категорий", { count: userCategories.length })}
                         </SectionMenuItemTitle>
+                        <SectionMenuItemDescription>
+                            Выберите категории карточек для изучения
+                        </SectionMenuItemDescription>
                     </SectionMenuItemText>
                 </SectionMenuItem>
 
                 <SectionMenuItem
-                    to="/"
+                    to="/app/learn"
                     className="border-b-background border-b-2"
                 >
                     <CirclePlusIcon className="text-rose-400" />

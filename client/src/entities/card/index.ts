@@ -1,1 +1,1 @@
-export type { Card } from "./model/types";
+export { Card } from "./ui/card";

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
 
 import { CardCategory } from "@/entities/card-category";
@@ -8,12 +8,11 @@ import { SectionMenuHeader } from "@/shared/ui/custom/section-menu";
 import { Button } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-import { Category } from "../model/types";
+import { useCategories } from "@/shared/hooks/useCategories";
 
 export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
-
-    const [categoryList, setCategoryList] = useState<Category[]>([]);
+    const { categoryList, setCategoryList } = useCategories();
 
     const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
         setCategoryList((prev) =>
@@ -26,21 +25,6 @@ export const CardCategoryList = observer(() => {
     const onSetUserCategories = () => {
         category.setUserCategories(auth.user.id, categoryList);
     };
-
-    useEffect(() => {
-        category.getUserCategories(auth.user.id);
-    }, [auth.user.id]);
-
-    useEffect(() => {
-        setCategoryList(
-            category.categories.map((cat) => ({
-                ...cat,
-                isSelected: category.userCategories.some(
-                    (userCat) => userCat.id === cat.id,
-                ),
-            })),
-        );
-    }, [category.categories, category.userCategories]);
 
     if (category.isLoading) {
         return (

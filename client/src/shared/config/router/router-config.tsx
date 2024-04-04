@@ -5,6 +5,7 @@ import { AuthorizationPage } from "@/pages/authorization-page";
 
 import { AppPage } from "@/pages/app-page";
 import { AppCategoryPage } from "@/pages/app-category-page";
+import { AppLearnPage } from "@/pages/app-learn-page";
 
 export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
     authOnly?: boolean;
@@ -15,6 +16,7 @@ export enum AppRoutes {
     AUTHORIZATION = "authorization",
     APP = "app",
     APP_CATEGORY = "app-category",
+    APP_LEARN = "app-learn",
 
     NOT_FOUND = "not-found",
 }
@@ -24,6 +26,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.AUTHORIZATION]: "/authorization",
     [AppRoutes.APP]: "/app",
     [AppRoutes.APP_CATEGORY]: "/app/category",
+    [AppRoutes.APP_LEARN]: "/app/learn",
 
     [AppRoutes.NOT_FOUND]: "/*",
 };
@@ -45,6 +48,11 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.APP_CATEGORY]: {
         path: RoutePath["app-category"],
         element: <AppCategoryPage />,
+        authOnly: true,
+    },
+    [AppRoutes.APP_LEARN]: {
+        path: RoutePath["app-learn"],
+        element: <AppLearnPage />,
         authOnly: true,
     },
 
