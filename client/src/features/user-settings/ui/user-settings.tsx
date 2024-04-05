@@ -21,10 +21,7 @@ export const UserSettings = observer(({ className }: UserSettingsProps) => {
         <div className={className}>
             <SectionMenuHeader>Настройки</SectionMenuHeader>
             <SectionMenuWrapper>
-                <SectionMenuItem
-                    to=""
-                    className="border-b-background border-b-2"
-                >
+                <SectionMenuItem className="border-b-background border-b-2">
                     <div>Выучено карточек сегодня: {dailyCards}</div>
                 </SectionMenuItem>
             </SectionMenuWrapper>

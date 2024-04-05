@@ -29,16 +29,37 @@ SectionMenuWrapper.displayName = "SectionMenuWrapper";
 
 const SectionMenuItem = React.forwardRef<
     HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement> & { to: string }
+    React.HTMLAttributes<HTMLDivElement> & { to?: string }
 >(({ to, className, ...props }, ref) => (
-    <div className="w-full dark:bg-primary-foreground/50 bg-primary/5 cursor-pointer rounded-none first:rounded-t-lg last:rounded-b-lg">
-        <Link to={to}>
-            <div
-                ref={ref}
-                className={cn("flex items-center gap-x-4 px-4 py-3", className)}
-                {...props}
-            />
-        </Link>
+    <div
+        className={cn(
+            "w-full dark:bg-primary-foreground/50 bg-primary/5 rounded-none first:rounded-t-lg last:rounded-b-lg",
+            to && "cursor-pointer",
+        )}
+    >
+        {to ? (
+            <Link to={to}>
+                <div
+                    ref={ref}
+                    className={cn(
+                        "flex items-center gap-x-4 px-4 py-3",
+                        className,
+                    )}
+                    {...props}
+                />
+            </Link>
+        ) : (
+            <div>
+                <div
+                    ref={ref}
+                    className={cn(
+                        "flex items-center gap-x-4 px-4 py-3",
+                        className,
+                    )}
+                    {...props}
+                />
+            </div>
+        )}
     </div>
 ));
 SectionMenuItem.displayName = "SectionMenuItem";
