@@ -8,6 +8,7 @@ import cardRouter from "./routes/card";
 import categoryRouter from "./routes/category";
 import { middlewareAuth } from "./middleware/auth-middleware";
 import { middlewareError } from "./middleware/error-middleware";
+import settingsRouter from "./routes/settings";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(
 app.use("/api", userRouter);
 app.use("/api", cardRouter);
 app.use("/api", categoryRouter);
+app.use("/api", settingsRouter);
 
 // Все мидлварены для обработки ошибок всегда подключаем в конце
 app.use(middlewareError);

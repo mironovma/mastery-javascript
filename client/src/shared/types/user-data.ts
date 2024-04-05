@@ -8,3 +8,11 @@ export interface Category {
 
     isSelected?: boolean;
 }
+
+export interface UserSettings {
+    id: string;
+    settings: {
+        dailyCards: number;
+    };
+    userId: string;
+}

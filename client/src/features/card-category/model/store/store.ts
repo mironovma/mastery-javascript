@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 import $api from "@/shared/api/api";
-import type { Category } from "@/shared/types/category";
+import type { Category } from "@/shared/types/user-data";
 
 export class CardCategoryStore {
     categories = [] as Category[];

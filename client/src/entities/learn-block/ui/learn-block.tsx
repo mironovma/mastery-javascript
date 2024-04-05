@@ -10,11 +10,11 @@ import {
     SectionMenuItemTitle,
     SectionMenuItemDescription,
 } from "@/shared/ui/custom/section-menu";
-import { useCategories } from "@/shared/hooks/useCategories";
+import { useUserData } from "@/shared/hooks/useCategories";
 
 export const LearnBlock = observer(() => {
     const { t } = useTranslation();
-    const { userCategories } = useCategories();
+    const { userCategories } = useUserData();
 
     return (
         <div>

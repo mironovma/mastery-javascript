@@ -8,15 +8,15 @@ import { SectionMenuHeader } from "@/shared/ui/custom/section-menu";
 import { Button } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-import { useCategories } from "@/shared/hooks/useCategories";
+import { useUserData } from "@/shared/hooks/useCategories";
 
 export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
-    const { categoryList, setCategoryList } = useCategories();
+    const { categoryList, setCategoryList } = useUserData();
 
     const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
         setCategoryList((prev) =>
-            prev.map((cat) =>
+            prev?.map((cat) =>
                 cat.id === id ? { ...cat, isSelected: e.target.checked } : cat,
             ),
         );

@@ -17,9 +17,10 @@ model User {
   restorePasswordCode String?
   registrationDate    DateTime @default(now())
   token               Token?
-
+  
   userCards           UserCard[]
   userCategories      UserCategory[]
+  userSettings        UserSettings[]
   userStatistics      UserStatistics[]
 }
 
@@ -86,6 +87,15 @@ model UserStatistics {
 
   @@unique([userId, date])
 }
+
+model UserSettings {
+  id                  String   @id @default(uuid())
+  settings            Json @default("{\"dailyCards\": 5}")
+  userId              String   @unique
+
+  user                User     @relation(fields: [userId], references: [id])
+}
+
 
 
 

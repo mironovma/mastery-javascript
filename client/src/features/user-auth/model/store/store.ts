@@ -62,7 +62,6 @@ export class AuthUserStore {
                 email,
                 password,
             });
-            console.log(response);
             // В localStorage записываем access токен.
             // Далее в инстансе при запросах будет цеплять этот токен в Headers
             // См. $api
@@ -74,8 +73,6 @@ export class AuthUserStore {
             // Передаем данные о пользователе в стор
             this.setUser(response.data.user);
         } catch (error) {
-            console.log(error);
-
             this.setError(error);
             return {
                 error,
@@ -95,7 +92,6 @@ export class AuthUserStore {
                 password,
                 username,
             });
-            console.log(response);
 
             // В localStorage записываем access токен. Далее в инстансе при запросах будет цеплять этот токен в Headers
             localStorage.setItem("token", response.data.accessToken);
@@ -106,8 +102,6 @@ export class AuthUserStore {
             // Передаем данные о пользователе в стор
             this.setUser(response.data.user);
         } catch (error) {
-            console.log(error);
-
             this.setError(error);
             return {
                 error,
@@ -132,8 +126,6 @@ export class AuthUserStore {
             // Очищаем данные о пользователе из стора
             this.setUser({} as User);
         } catch (error) {
-            console.log(error);
-
             return {
                 error,
             };
@@ -151,7 +143,6 @@ export class AuthUserStore {
                 // Используем withCredetials, чтобы сразу отправлять куки с запросом
                 { withCredentials: true },
             );
-            console.log(response);
 
             // В localStorage записываем access токен. Далее в инстансе при запросах будет цеплять этот токен в Headers
             localStorage.setItem("token", response.data.accessToken);
@@ -162,8 +153,6 @@ export class AuthUserStore {
             // Передаем данные о пользователе в стор
             this.setUser(response.data.user);
         } catch (error) {
-            console.log(error);
-
             return {
                 error,
             };
@@ -184,14 +173,11 @@ export class AuthUserStore {
                 email,
             });
 
-            console.log(response);
-
             this.setSuccessMessage(response.data.message as string);
             this.setResetPasswordState("confirmCode");
             return response.data;
         } catch (error) {
             this.setError(error);
-            console.log(error);
             return {
                 error,
             };
@@ -211,14 +197,11 @@ export class AuthUserStore {
                 code,
             });
 
-            console.log(response);
-
             this.setSuccessMessage(response.data.message as string);
             this.setResetPasswordState("awaitingNewPassword");
             return response.data;
         } catch (error) {
             this.setError(error);
-            console.log(error);
             return {
                 error,
             };
@@ -241,12 +224,9 @@ export class AuthUserStore {
                 },
             );
 
-            console.log(response);
-
             this.setSuccessMessage(response.data.message as string);
         } catch (error) {
             this.setError(error);
-            console.log(error);
             return {
                 error,
             };
