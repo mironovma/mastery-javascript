@@ -4,16 +4,19 @@ import { reaction } from "mobx";
 import { CardCategoryStore } from "@/features/card-category";
 import { AuthUserStore } from "@/features/user-auth";
 import { UserSettingsStore } from "@/features/user-settings";
+import { CardStore } from "@/features/card-learn";
 
 export class RootStore {
     auth: AuthUserStore;
     category: CardCategoryStore;
     settings: UserSettingsStore;
+    card: CardStore;
 
     constructor() {
         this.auth = new AuthUserStore();
         this.category = new CardCategoryStore();
         this.settings = new UserSettingsStore();
+        this.card = new CardStore();
 
         reaction(
             () => this.auth.user.id,
@@ -21,6 +24,7 @@ export class RootStore {
                 if (userId) {
                     this.category.initializeUserCategories(userId);
                     this.settings.getUserSettings(userId);
+                    this.card.loadLearningCards(userId);
                     /**
                      * Чтобы в компонентах не писать бойлерплейт код с useEffect, 
                      * где при маунте компонента получаем что-то (категории, настройки) в зависимости

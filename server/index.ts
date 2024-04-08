@@ -32,7 +32,11 @@ app.use("/api", userRouter);
 app.use("/api", cardRouter);
 app.use("/api", categoryRouter);
 app.use("/api", settingsRouter);
+//
+app.use("/api", cardRouter);
 
+// Для доступа к эндпоинтам только для авторизованных пользователей
+// app.use(middlewareAuth);
 // Все мидлварены для обработки ошибок всегда подключаем в конце
 app.use(middlewareError);
 
