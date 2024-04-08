@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { PencilIcon, CirclePlusIcon, HistoryIcon, ZapIcon } from "lucide-react";
@@ -16,15 +15,9 @@ import { Skeleton } from "@/shared/ui/skeleton";
 
 export const LearnBlock = observer(() => {
     const { t } = useTranslation();
-    const { auth, category, settings } = useMobxStore();
+    const { category, settings } = useMobxStore();
 
     const selectedCategories = category.userCategories.length;
-
-    useEffect(() => {
-        if (auth.user.id) {
-            category.initializeUserCategories(auth.user.id);
-        }
-    }, [auth.user.id, category]);
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
 
 import { CardCategory } from "@/entities/card-category";
@@ -10,12 +10,6 @@ import { Skeleton } from "@/shared/ui/skeleton";
 
 export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
-
-    useEffect(() => {
-        if (auth.user.id) {
-            category.initializeUserCategories(auth.user.id);
-        }
-    }, [auth.user.id, category]);
 
     const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
         category.updateCategorySelection(id, e.target.checked);

@@ -7,7 +7,6 @@ import {
 } from "@/shared/ui/custom/section-menu";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { useMobxStore } from "@/shared/hooks/useMobxStore";
-import { useEffect } from "react";
 
 /**
  * TODO: реализовать отображение ежедневных карточек к изучению
@@ -19,13 +18,9 @@ interface UserSettingsProps {
 }
 
 export const UserSettings = observer(({ className }: UserSettingsProps) => {
-    const { auth, settings } = useMobxStore();
+    const { settings } = useMobxStore();
 
     const dailyCards = settings.userSettings?.[0].settings.dailyCards;
-
-    useEffect(() => {
-        settings.getUserSettings(auth.user.id);
-    }, [auth.user.id, settings]);
 
     return (
         <div className={className}>
