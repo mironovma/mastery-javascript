@@ -1,4 +1,4 @@
-import { Category, UserCategory } from "@prisma/client";
+import { Category } from "@prisma/client";
 import { db } from "../helpers/db";
 
 class CategoryService {

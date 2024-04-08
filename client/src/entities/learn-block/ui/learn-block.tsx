@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { PencilIcon, CirclePlusIcon, HistoryIcon, ZapIcon } from "lucide-react";
@@ -10,11 +11,20 @@ import {
     SectionMenuItemTitle,
     SectionMenuItemDescription,
 } from "@/shared/ui/custom/section-menu";
-import { useUserData } from "@/shared/hooks/useCategories";
+import { useMobxStore } from "@/shared/hooks/useMobxStore";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 export const LearnBlock = observer(() => {
     const { t } = useTranslation();
-    const { userCategories } = useUserData();
+    const { category, auth } = useMobxStore();
+
+    const selectedCategories = category.userCategories.length;
+
+    useEffect(() => {
+        if (auth.user.id) {
+            category.initializeUserCategories(auth.user.id);
+        }
+    }, [auth.user.id, category]);
 
     return (
         <div>
@@ -26,8 +36,12 @@ export const LearnBlock = observer(() => {
                 >
                     <PencilIcon className="text-gray-400" />
                     <SectionMenuItemText>
-                        <SectionMenuItemTitle>
-                            {t("категорий", { count: userCategories.length })}
+                        <SectionMenuItemTitle className="flex items-center gap-1">
+                            {category.isLoading ? (
+                                <Skeleton className="w-4 h-4" />
+                            ) : (
+                                t("категорий", { count: selectedCategories })
+                            )}
                         </SectionMenuItemTitle>
                         <SectionMenuItemDescription>
                             Выберите категории карточек для изучения

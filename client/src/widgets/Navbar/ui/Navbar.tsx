@@ -55,12 +55,12 @@ export const Navbar = memo(({ className }: NavbarProps) => {
             </div>
 
             <div className="flex-1 flex justify-center">
-                <h1>
+                <div>
                     <span className="dark:text-sky-700 text-white">
                         {t("APP_NAME").slice(0, 2)}
                     </span>
                     <span>{t("APP_NAME").slice(2)}</span>
-                </h1>
+                </div>
             </div>
             <div className="flex-1 flex justify-end items-center gap-3">
                 <AuthUser />
@@ -82,12 +82,12 @@ const NavbarBurger = () => {
             <SheetContent side="left">
                 <SheetHeader>
                     <SheetTitle>
-                        <h1>
+                        <div>
                             <span className="text-sky-700">
                                 {t("APP_NAME").slice(0, 2)}
                             </span>
                             <span>{t("APP_NAME").slice(2)}</span>
-                        </h1>
+                        </div>
                     </SheetTitle>
                 </SheetHeader>
                 <div className="py-4">

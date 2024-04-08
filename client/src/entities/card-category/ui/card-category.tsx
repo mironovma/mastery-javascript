@@ -19,6 +19,10 @@ interface CardCategoryProps {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
+/**
+ * TODO: переименовать в CardCategoryItem
+ */
+
 export const CardCategory = observer(
     ({
         className,

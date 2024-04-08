@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { CardCategory } from "@/entities/card-category";
@@ -8,22 +8,21 @@ import { SectionMenuHeader } from "@/shared/ui/custom/section-menu";
 import { Button } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-import { useUserData } from "@/shared/hooks/useCategories";
-
 export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
-    const { categoryList, setCategoryList } = useUserData();
+
+    useEffect(() => {
+        if (auth.user.id) {
+            category.initializeUserCategories(auth.user.id);
+        }
+    }, [auth.user.id, category]);
 
     const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
-        setCategoryList((prev) =>
-            prev?.map((cat) =>
-                cat.id === id ? { ...cat, isSelected: e.target.checked } : cat,
-            ),
-        );
+        category.updateCategorySelection(id, e.target.checked);
     };
 
-    const onSetUserCategories = () => {
-        category.setUserCategories(auth.user.id, categoryList);
+    const onSaveUserCategories = () => {
+        category.saveUserCategories(auth.user.id);
     };
 
     if (category.isLoading) {
@@ -42,12 +41,14 @@ export const CardCategoryList = observer(() => {
                 Выберите категории для изучения
             </SectionMenuHeader>
 
-            {categoryList.map((cat) => (
+            {category.categories.map((cat) => (
                 <CardCategory
                     className="mb-[2px]"
                     key={cat.id}
                     name={cat.name}
-                    isChecked={cat.isSelected ?? false}
+                    isChecked={category.userCategories.some(
+                        (userCat) => userCat.id === cat.id,
+                    )}
                     description={cat.description}
                     onChange={onChange(cat.id)}
                 />
@@ -56,7 +57,7 @@ export const CardCategoryList = observer(() => {
             <div className="flex justify-center">
                 <Button
                     className="fixed bottom-4 w-1/2"
-                    onClick={onSetUserCategories}
+                    onClick={onSaveUserCategories}
                 >
                     Сохранить
                 </Button>
