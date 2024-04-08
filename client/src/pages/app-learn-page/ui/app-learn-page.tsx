@@ -1,9 +1,9 @@
 import { memo } from "react";
 
-import { Card } from "@/entities/card/ui/card";
+import { CardLearn } from "@/features/card-learn";
 
 const AppLearnPage = () => {
-    return <Card />;
+    return <CardLearn />;
 };
 
 export default memo(AppLearnPage);
