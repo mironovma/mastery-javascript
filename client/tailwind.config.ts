@@ -69,7 +69,7 @@ const config = {
             },
             height: {
                 navbar: "3.5rem",
-                card: "calc(100vh - 5.5rem)",
+                card: "calc(100dvh - 5.5rem)",
             },
         },
     },
