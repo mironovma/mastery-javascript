@@ -34,7 +34,7 @@ export const Navbar = memo(({ className }: NavbarProps) => {
     return (
         <menu
             className={cn(
-                "w-full h-14 px-3 bg-sky-700 dark:bg-slate-900 flex items-center sticky",
+                "w-full h-navbar px-3 bg-sky-700 dark:bg-slate-900 flex items-center sticky",
                 className,
             )}
         >

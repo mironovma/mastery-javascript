@@ -67,6 +67,10 @@ const config = {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
+            height: {
+                navbar: "3.5rem",
+                card: "calc(100vh - 5.5rem)",
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],
