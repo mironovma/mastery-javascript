@@ -7,13 +7,13 @@ class CardController {
         try {
             const { userId } = req.params;
             const cards = await cardService.getCardToLearn(userId);
+
             return res.json(cards);
         } catch (error) {
             next(error);
         }
     }
 
-    // ---------------------------------------------------------
     // Отправляем в БД для повторения (учим карточку)
     async onStartLearn(req: Request, res: Response, next: NextFunction) {
         try {
@@ -21,7 +21,7 @@ class CardController {
             const { cardId } = req.body;
             await cardService.onStartLearn(userId, cardId);
 
-            return res.status(200);
+            return res.json("Success onStartLearn");
         } catch (error) {
             next(error);
         }
@@ -32,8 +32,9 @@ class CardController {
         try {
             const { userId } = req.params;
             const { cardId } = req.body;
-
             await cardService.onEndLearn(userId, cardId);
+
+            return res.json("Success onEndLearn");
         } catch (error) {
             next(error);
         }

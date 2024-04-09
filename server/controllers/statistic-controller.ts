@@ -17,6 +17,21 @@ class StatisticController {
             next(error);
         }
     }
+
+    async createUserStatisticToday(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        try {
+            const { userId } = req.params;
+            const statisticToday =
+                await statisticService.createUserStatisticToday(userId);
+            return res.json(statisticToday);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const statisticController = new StatisticController();

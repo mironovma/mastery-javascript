@@ -25,6 +25,16 @@ class StatisticService {
 
         return statisticToday;
     }
+
+    async createUserStatisticToday(userId: string) {
+        const statisticToday = await db.userStatistics.create({
+            data: {
+                userId,
+            },
+        });
+
+        return statisticToday;
+    }
 }
 
 export const statisticService = new StatisticService();

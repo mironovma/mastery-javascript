@@ -8,4 +8,9 @@ statisticRouter.get(
     statisticController.getUserStatisticToday
 );
 
+statisticRouter.post(
+    "/statistic/today/:userId",
+    statisticController.createUserStatisticToday
+);
+
 export default statisticRouter;

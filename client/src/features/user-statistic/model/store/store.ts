@@ -23,7 +23,24 @@ export class UserStatisticStore {
         this.isLoading = true;
 
         try {
-            const response = await $api(`/statistic/today/${userId}`);
+            const response = await $api.get(`/statistic/today/${userId}`);
+            runInAction(() => {
+                this.statisticToday = response.data;
+            });
+        } catch (error) {
+            return { error };
+        } finally {
+            runInAction(() => {
+                this.isLoading = false;
+            });
+        }
+    }
+
+    async createUserStatisticToday(userId: string) {
+        this.isLoading = true;
+
+        try {
+            const response = await $api.post(`/statistic/today/${userId}`);
             runInAction(() => {
                 this.statisticToday = response.data;
             });
