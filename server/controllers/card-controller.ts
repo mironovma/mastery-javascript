@@ -39,15 +39,6 @@ class CardController {
             next(error);
         }
     }
-
-    // async getCards(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const cards = await cardService.getCards();
-    //         return res.json(cards);
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
 }
 
 export const cardController = new CardController();
