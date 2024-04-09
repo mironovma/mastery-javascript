@@ -2,7 +2,7 @@ import { Card } from "@prisma/client";
 import { db } from "../helpers/db";
 
 class CardService {
-    async getCardsToLearn(userId: string) {
+    async getCardToLearn(userId: string) {
         const userCategoriesToLearn = await db.userCategory.findMany({
             where: {
                 userId,

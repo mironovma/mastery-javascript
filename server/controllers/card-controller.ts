@@ -3,10 +3,10 @@ import { Request, Response, NextFunction } from "express";
 import { cardService } from "../services/card-service";
 
 class CardController {
-    async getCardsToLearn(req: Request, res: Response, next: NextFunction) {
+    async getCardToLearn(req: Request, res: Response, next: NextFunction) {
         try {
             const { userId } = req.params;
-            const cards = await cardService.getCardsToLearn(userId);
+            const cards = await cardService.getCardToLearn(userId);
             return res.json(cards);
         } catch (error) {
             next(error);
