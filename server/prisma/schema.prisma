@@ -63,11 +63,16 @@ model UserCategory {
   @@unique([userId, categoryId])
 }
 
+enum UserCardStatus {
+  LEARNING
+  MEMORIZED
+}
+
 model UserCard {
   id                  String   @id @default(uuid())
   userId              String
   cardId              String
-  status              String   // ["learning", "known"]
+  status              UserCardStatus
   nextReview          DateTime
   reviewCount         Int      @default(0)
   user                User     @relation(fields: [userId], references: [id])
