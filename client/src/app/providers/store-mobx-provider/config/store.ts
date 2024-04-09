@@ -49,6 +49,14 @@ export class RootStore {
                 }
             },
         );
+
+        // Для обновления стейта со статистикой для изучения и повторения карточек
+        reaction(
+            () => this.card.card,
+            () => {
+                this.statistic.getUserStatisticToday(this.auth.user.id);
+            },
+        );
     }
 }
 
