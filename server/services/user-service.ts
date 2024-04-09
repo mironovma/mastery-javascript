@@ -51,6 +51,13 @@ class UserService {
             },
         });
 
+        // И задаем ему дефолтные настройки (кол-во карточек для изучения в день)
+        await db.userSettings.create({
+            data: {
+                userId: newUser.id,
+            },
+        });
+
         // Отправляем email для подтверждения регистрации с помощью mail-service
         // await mailService.sendActivationMail(
         //     email,
