@@ -1,16 +1,62 @@
+import { Card } from "@prisma/client";
 import { db } from "../helpers/db";
 
 class CardService {
-    async getCardsToLearn(userId: string) {}
+    async getCardsToLearn(userId: string) {
+        const userCategoriesToLearn = await db.userCategory.findMany({
+            where: {
+                userId,
+            },
+        });
 
-    async onLearn(userId: string, cardId: string) {}
+        const tryGetCard = async (attempt = 0): Promise<Card | null> => {
+            if (attempt > userCategoriesToLearn.length) {
+                return null;
+            }
 
-    async onMemorize(userId: string, cardId: string) {}
+            const randomCategoryToLearn = Math.floor(
+                Math.random() * userCategoriesToLearn.length
+            );
 
-    // async getCards() {
-    //     const users = await db.user.findMany();
-    //     return users;
-    // }
+            const selectedCategory = userCategoriesToLearn.splice(
+                randomCategoryToLearn,
+                1
+            )[0]; // Выбираем категорию и удаляем ее, чтобы не выбирать снова в следующем шаге рекурсии
+
+            const userCardsInLearning = await db.userCard.findMany({
+                where: {
+                    userId,
+                },
+            });
+
+            const userCardsInLearningIds = userCardsInLearning.map(
+                (card) => card.cardId
+            );
+
+            const cardToLearn = await db.card.findFirst({
+                where: {
+                    categoryId: selectedCategory.categoryId,
+                    NOT: {
+                        id: {
+                            in: userCardsInLearningIds,
+                        },
+                    },
+                },
+            });
+
+            if (cardToLearn) {
+                return cardToLearn;
+            } else {
+                return tryGetCard(attempt + 1);
+            }
+        };
+
+        return tryGetCard();
+    }
+
+    async onStartLearn(userId: string, cardId: string) {}
+
+    async onEndLearn(userId: string, cardId: string) {}
 }
 
 export const cardService = new CardService();

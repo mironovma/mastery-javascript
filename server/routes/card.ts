@@ -9,7 +9,7 @@ cardRouter.get("/cards/learning/:userId", cardController.getCardsToLearn);
 /**
  * TODO: Придумать названия для эндпоинтов и контроллеров + сервисов получше
  */
-cardRouter.post("/cards/to-learn/:userId", cardController.onLearn);
-cardRouter.post("/cards/to-memorized/:userId", cardController.onMemorize);
+cardRouter.post("/cards/start-learn/:userId", cardController.onStartLearn);
+cardRouter.post("/cards/end-learn/:userId", cardController.onEndLearn);
 
 export default cardRouter;
