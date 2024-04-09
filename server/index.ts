@@ -9,6 +9,7 @@ import categoryRouter from "./routes/category";
 import { middlewareAuth } from "./middleware/auth-middleware";
 import { middlewareError } from "./middleware/error-middleware";
 import settingsRouter from "./routes/settings";
+import statisticRouter from "./routes/statistic";
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ app.use("/api", userRouter);
 app.use("/api", cardRouter);
 app.use("/api", categoryRouter);
 app.use("/api", settingsRouter);
-//
+app.use("/api", statisticRouter);
 app.use("/api", cardRouter);
 
 // Для доступа к эндпоинтам только для авторизованных пользователей
