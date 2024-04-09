@@ -60,10 +60,12 @@ export const Card = memo(
                                 </div>
                             </Button>
                             {options && (
+                                // TODO: Реализовать функционал для выбора варианта ответа
                                 <Button
                                     className="p-11"
                                     size="icon"
                                     variant="outline"
+                                    disabled
                                     onClick={() => setIsListPressed(true)}
                                 >
                                     <div>
@@ -80,9 +82,9 @@ export const Card = memo(
                             {detailedAnswer && (
                                 <Drawer>
                                     <DrawerTrigger asChild>
-                                        <Button variant="ghost" size="sm">
+                                        <button className="text-sm underline self-start">
                                             Читать подробнее...
-                                        </Button>
+                                        </button>
                                     </DrawerTrigger>
                                     <DrawerContent className="min-h-96">
                                         <p className="px-10 py-6 h-80 overflow-y-auto">
