@@ -13,20 +13,11 @@ export const CardLearn = observer(() => {
         settings.isLoading ||
         card.isLoading ||
         statistic.isLoading ||
-        category.isLoading
+        category.isLoading ||
+        !card.card
     ) {
         return <Skeleton className="w-full h-card" />;
     }
-
-    /**
-     * TODO:
-     * ЕСТЬ ПРОБЛЕМА!
-     *
-     * Не выполняется условие if dailyCardLimitToLearn === statistic,
-     * пока не перезагрузишь страницу (не обновляется состояние компонента)
-     *
-     * ИСПРАВИТЬ!
-     */
 
     if (!statistic.statisticToday) {
         statistic.createUserStatisticToday(auth.user.id);
@@ -35,9 +26,15 @@ export const CardLearn = observer(() => {
     const dailyCardLimitToLearn =
         settings.userSettings?.[0].settings.dailyCards;
 
-    const categoryName = category.userCategories.filter(
+    const categoryItem = category.userCategories.find(
         (cat) => cat.id === card.card?.categoryId,
-    )[0].name;
+    );
+
+    if (!categoryItem) {
+        return <Skeleton className="w-full h-card" />;
+    }
+
+    const categoryName = categoryItem.name;
 
     if (
         dailyCardLimitToLearn !== undefined &&
@@ -50,10 +47,10 @@ export const CardLearn = observer(() => {
     return (
         <Card
             category={categoryName}
-            question={card.card!.question}
-            shortAnswer={card.card!.shortAnswer}
-            detailedAnswer={card.card!.detailedAnswer}
-            options={card.card!.options}
+            question={card.card.question}
+            shortAnswer={card.card.shortAnswer}
+            detailedAnswer={card.card.detailedAnswer}
+            options={card.card.options}
             acceptButtonLabel="Я уже знаю эту карточку"
             declineButtonLabel="Начать учить карточку"
             onAccept={() => card.onEndLearn(auth.user.id, card.card!.id)}
