@@ -13,7 +13,19 @@ class SettingsController {
         }
     }
 
-    async setUserSettings(req: Request, res: Response, next: NextFunction) {}
+    async setUserSettings(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId, settings } = req.body;
+
+            const newUserSettigns = await settingsService.setUserSettings(
+                userId,
+                settings
+            );
+            return res.json(newUserSettigns);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const settignsController = new SettingsController();

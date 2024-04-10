@@ -5,6 +5,6 @@ const settingsRouter = Router();
 
 settingsRouter.get("/settings/:userId", settignsController.getUserSettings);
 
-// settingsRouter.patch("/settigns/:userId", settignsController.setUserSettings);
+settingsRouter.post("/settings", settignsController.setUserSettings);
 
 export default settingsRouter;

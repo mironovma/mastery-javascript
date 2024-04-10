@@ -13,77 +13,99 @@ import {
 import { useMobxStore } from "@/shared/hooks/useMobxStore";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-export const LearnBlock = observer(() => {
-    const { t } = useTranslation();
-    const { category, settings, statistic } = useMobxStore();
+interface LearnBlockProps {
+    className?: string;
+    learnedToday?: number;
+    dailyCardsToLearn?: number;
+}
 
-    const selectedCategories = category.userCategories.length;
+export const LearnBlock = observer(
+    ({ className, learnedToday, dailyCardsToLearn }: LearnBlockProps) => {
+        const { t } = useTranslation();
+        const { category, statistic } = useMobxStore();
 
-    return (
-        <div>
-            <SectionMenuHeader>Изучение новых карточек</SectionMenuHeader>
-            <SectionMenuWrapper>
-                <SectionMenuItem
-                    to="/app/category"
-                    className="border-b-background border-b-2"
-                >
-                    <PencilIcon className="text-gray-400" />
-                    <SectionMenuItemText>
-                        <SectionMenuItemTitle className="flex items-center gap-1">
-                            {category.isLoading ? (
-                                <Skeleton className="w-4 h-4" />
-                            ) : (
-                                t("категорий", { count: selectedCategories })
-                            )}
-                        </SectionMenuItemTitle>
-                        <SectionMenuItemDescription>
-                            Выберите категории карточек для изучения
-                        </SectionMenuItemDescription>
-                    </SectionMenuItemText>
-                </SectionMenuItem>
+        const selectedCategories = category.userCategories.length;
 
-                <SectionMenuItem
-                    to="/app/learn"
-                    className="border-b-background border-b-2"
-                >
-                    <CirclePlusIcon className="text-rose-400" />
-                    <SectionMenuItemText>
-                        <SectionMenuItemTitle>
-                            Учить новые карточки
-                        </SectionMenuItemTitle>
-                        <SectionMenuItemDescription>
-                            Выучено сегодня:{" "}
-                            {statistic.statisticToday?.newCards ?? 0} из{" "}
-                            {settings.userSettings?.[0].settings.dailyCards}
-                        </SectionMenuItemDescription>
-                    </SectionMenuItemText>
-                </SectionMenuItem>
+        if (category.isLoading || statistic.isLoading) {
+            return (
+                <div className={className}>
+                    <SectionMenuHeader>
+                        Изучение новых карточек
+                    </SectionMenuHeader>
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                </div>
+            );
+        }
 
-                <SectionMenuItem
-                    to="/"
-                    className="border-b-background border-b-2"
-                >
-                    <HistoryIcon className="text-yellow-300" />
-                    <SectionMenuItemText>
-                        <SectionMenuItemTitle>
-                            Повторить карточки
-                        </SectionMenuItemTitle>
-                        <SectionMenuItemDescription>
-                            Карточки для повторения появятся через 3 часа
-                        </SectionMenuItemDescription>
-                    </SectionMenuItemText>
-                </SectionMenuItem>
+        return (
+            <div className={className}>
+                <SectionMenuHeader>Изучение новых карточек</SectionMenuHeader>
+                <SectionMenuWrapper>
+                    <SectionMenuItem
+                        to="/app/category"
+                        className="border-b-background border-b-2"
+                    >
+                        <PencilIcon className="text-gray-400" />
+                        <SectionMenuItemText>
+                            <SectionMenuItemTitle className="flex items-center gap-1">
+                                {t("категорий", {
+                                    count: selectedCategories,
+                                })}
+                            </SectionMenuItemTitle>
+                            <SectionMenuItemDescription>
+                                Выберите категории карточек для изучения
+                            </SectionMenuItemDescription>
+                        </SectionMenuItemText>
+                    </SectionMenuItem>
 
-                <SectionMenuItem to="/">
-                    <ZapIcon className="text-blue-400" />
-                    <SectionMenuItemText>
-                        <SectionMenuItemTitle>Микс-режим</SectionMenuItemTitle>
-                        <SectionMenuItemDescription>
-                            Повторите все карточки: новые, старые, на повторение
-                        </SectionMenuItemDescription>
-                    </SectionMenuItemText>
-                </SectionMenuItem>
-            </SectionMenuWrapper>
-        </div>
-    );
-});
+                    <SectionMenuItem
+                        to="/app/learn"
+                        className="border-b-background border-b-2"
+                    >
+                        <CirclePlusIcon className="text-rose-400" />
+                        <SectionMenuItemText>
+                            <SectionMenuItemTitle>
+                                Учить новые карточки
+                            </SectionMenuItemTitle>
+                            <SectionMenuItemDescription>
+                                Выучено сегодня: {learnedToday} из{" "}
+                                {dailyCardsToLearn}
+                            </SectionMenuItemDescription>
+                        </SectionMenuItemText>
+                    </SectionMenuItem>
+
+                    <SectionMenuItem
+                        to="/"
+                        className="border-b-background border-b-2"
+                    >
+                        <HistoryIcon className="text-yellow-300" />
+                        <SectionMenuItemText>
+                            <SectionMenuItemTitle>
+                                Повторить карточки
+                            </SectionMenuItemTitle>
+                            <SectionMenuItemDescription>
+                                Карточки для повторения появятся через 3 часа
+                            </SectionMenuItemDescription>
+                        </SectionMenuItemText>
+                    </SectionMenuItem>
+
+                    <SectionMenuItem to="/">
+                        <ZapIcon className="text-blue-400" />
+                        <SectionMenuItemText>
+                            <SectionMenuItemTitle>
+                                Микс-режим
+                            </SectionMenuItemTitle>
+                            <SectionMenuItemDescription>
+                                Повторите все карточки: новые, старые, на
+                                повторение
+                            </SectionMenuItemDescription>
+                        </SectionMenuItemText>
+                    </SectionMenuItem>
+                </SectionMenuWrapper>
+            </div>
+        );
+    },
+);

@@ -1,7 +1,7 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 import $api from "@/shared/api/api";
-import { UserSettings } from "@/shared/types/user-data";
+import { Settings, UserSettings } from "@/shared/types/user-data";
 
 export class UserSettingsStore {
     userSettings: UserSettings[] | undefined;
@@ -29,6 +29,21 @@ export class UserSettingsStore {
             return {
                 error,
             };
+        } finally {
+            this.setIsLoading(false);
+        }
+    }
+
+    async setNewUserSettings(userId: string, settings: Settings) {
+        this.setIsLoading(true);
+        try {
+            const response = await $api.post("/settings", { userId, settings });
+
+            runInAction(() => {
+                this.userSettings = response.data;
+            });
+        } catch (error) {
+            return { error };
         } finally {
             this.setIsLoading(false);
         }
