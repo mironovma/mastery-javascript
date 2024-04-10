@@ -11,9 +11,9 @@ class StatisticService {
         const startOfNextDay = new Date(startOfDay);
         startOfNextDay.setDate(startOfDay.getDate() + 1);
 
-        console.log(startOfDay, startOfNextDay);
+        let statisticToday;
 
-        const statisticToday = await db.userStatistics.findFirst({
+        statisticToday = await db.userStatistics.findFirst({
             where: {
                 userId,
                 date: {

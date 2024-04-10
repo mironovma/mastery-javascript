@@ -15,7 +15,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 
 export const LearnBlock = observer(() => {
     const { t } = useTranslation();
-    const { category, settings } = useMobxStore();
+    const { category, settings, statistic } = useMobxStore();
 
     const selectedCategories = category.userCategories.length;
 
@@ -52,7 +52,8 @@ export const LearnBlock = observer(() => {
                             Учить новые карточки
                         </SectionMenuItemTitle>
                         <SectionMenuItemDescription>
-                            Выучено сегодня: 0 из{" "}
+                            Выучено сегодня:{" "}
+                            {statistic.statisticToday?.newCards ?? 0} из{" "}
                             {settings.userSettings?.[0].settings.dailyCards}
                         </SectionMenuItemDescription>
                     </SectionMenuItemText>

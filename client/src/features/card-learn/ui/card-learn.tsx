@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { observer } from "mobx-react-lite";
 
 import { CongratsWindow } from "@/widgets/congrats-window";
@@ -17,10 +16,6 @@ export const CardLearn = observer(() => {
         !card.card
     ) {
         return <Skeleton className="w-full h-card" />;
-    }
-
-    if (!statistic.statisticToday) {
-        statistic.createUserStatisticToday(auth.user.id);
     }
 
     const dailyCardLimitToLearn =

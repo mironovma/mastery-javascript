@@ -18,7 +18,7 @@ interface UserSettingsProps {
 }
 
 export const UserSettings = observer(({ className }: UserSettingsProps) => {
-    const { settings } = useMobxStore();
+    const { settings, statistic } = useMobxStore();
 
     const dailyCards = settings.userSettings?.[0].settings.dailyCards;
 
@@ -29,6 +29,7 @@ export const UserSettings = observer(({ className }: UserSettingsProps) => {
                 <SectionMenuItem className="border-b-background border-b-2">
                     <div className="flex items-center gap-2">
                         Выучено карточек сегодня:{" "}
+                        {statistic.statisticToday?.newCards ?? 0}/
                         {settings.isLoading ? (
                             <Skeleton className="w-4 h-4" />
                         ) : (

@@ -36,6 +36,9 @@ export class UserStatisticStore {
         }
     }
 
+    /**
+     * @deprecated Этот action нигде не используется. Возможно, в будущем удалить.
+     */
     async createUserStatisticToday(userId: string) {
         this.isLoading = true;
 

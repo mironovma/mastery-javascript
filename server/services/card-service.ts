@@ -56,12 +56,14 @@ class CardService {
     }
 
     async onStartLearn(userId: string, cardId: string) {
+        const now = new Date();
+        const nextReview = new Date(now.getTime() + 30 * 60000);
+
         const card = await db.userCard.create({
             data: {
                 userId,
                 cardId,
-                // TODO: прибавлять 30 минут
-                nextReview: "2024-04-09T10:35:49.888Z",
+                nextReview: nextReview.toISOString(),
                 status: "LEARNING",
             },
         });
@@ -85,6 +87,7 @@ class CardService {
             await db.userStatistics.create({
                 data: {
                     userId,
+                    newCards: 1,
                 },
             });
         } else {
@@ -105,6 +108,42 @@ class CardService {
     }
 
     async onEndLearn(userId: string, cardId: string) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const userStatistic = await db.userStatistics.findFirst({
+            where: {
+                userId,
+                date: {
+                    gte: today,
+                    lt: tomorrow,
+                },
+            },
+        });
+
+        if (!userStatistic) {
+            await db.userStatistics.create({
+                data: {
+                    userId,
+                    learnedCards: 1,
+                },
+            });
+        } else {
+            await db.userStatistics.update({
+                where: {
+                    id: userStatistic.id,
+                },
+                data: {
+                    learnedCards: {
+                        increment: 1,
+                    },
+                    date: new Date().toISOString(),
+                },
+            });
+        }
+
         const currentCard = await db.userCard.findFirst({
             where: {
                 userId,
@@ -114,7 +153,7 @@ class CardService {
 
         let card;
 
-        // Далее в фиче для повторения карточек буду просто фильтровать по status
+        // Далее в фиче для повторения карточек буду просто фильтровать по status и по времени
         if (!currentCard) {
             card = await db.userCard.create({
                 data: {
@@ -136,9 +175,6 @@ class CardService {
                 status: "MEMORIZED",
             },
         });
-
-        // TODO: сделать редактирование статистики и здесь,
-        // чтобы поле learnedCard обновлялось
 
         return card;
     }
