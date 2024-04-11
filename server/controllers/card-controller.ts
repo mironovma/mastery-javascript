@@ -39,6 +39,28 @@ class CardController {
             next(error);
         }
     }
+
+    async getCardToRepeat(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params;
+            const cards = await cardService.getCardToRepeat(userId);
+
+            return res.json(cards);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async onEndRepeat(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId, cardId } = req.body;
+            await cardService.onEndRepeat(userId, cardId);
+
+            return res.json("Success onEndRepeat");
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const cardController = new CardController();

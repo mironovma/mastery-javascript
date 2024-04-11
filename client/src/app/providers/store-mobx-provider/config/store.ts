@@ -5,11 +5,13 @@ import { CardCategoryStore } from "@/features/card-category";
 import { AuthUserStore } from "@/features/user-auth";
 import { UserSettingsStore } from "@/features/user-settings";
 import { CardStore } from "@/features/card-learn";
+import { CardRepeatStore } from "@/features/card-repeat";
 import { UserStatisticStore } from "@/features/user-statistic";
 
 export class RootStore {
     auth: AuthUserStore;
     card: CardStore;
+    cardsToRepeat: CardRepeatStore;
     category: CardCategoryStore;
     settings: UserSettingsStore;
     statistic: UserStatisticStore;
@@ -17,6 +19,7 @@ export class RootStore {
     constructor() {
         this.auth = new AuthUserStore();
         this.card = new CardStore();
+        this.cardsToRepeat = new CardRepeatStore();
         this.category = new CardCategoryStore();
         this.settings = new UserSettingsStore();
         this.statistic = new UserStatisticStore();
@@ -26,7 +29,7 @@ export class RootStore {
             (userId) => {
                 if (userId) {
                     this.card.getCardsToLearn(userId);
-                    this.card.getCardsToRepeat(userId);
+                    this.cardsToRepeat.getCardsToRepeat(userId);
                     this.category.initializeUserCategories(userId);
                     this.settings.getUserSettings(userId);
                     this.statistic.getUserStatisticToday(userId);

@@ -178,6 +178,98 @@ class CardService {
 
         return card;
     }
+
+    async getCardToRepeat(userId: string) {
+        const now = new Date();
+
+        const userCards = await db.userCard.findMany({
+            where: {
+                userId,
+                status: "LEARNING",
+            },
+        });
+
+        if (!userCards.length) {
+            return {
+                message:
+                    "Все карточки уже MEMORIZED. Начните учить новые карточки.",
+            };
+        }
+
+        const cardsToRepeatIds = userCards
+            .filter((card) => card.nextReview <= now)
+            .map((card) => card.cardId);
+
+        if (!cardsToRepeatIds.length) {
+            return {
+                message: "На данный момент нет карточек для повторения.",
+            };
+        }
+
+        const cardsToRepeat = await db.card.findMany({
+            where: {
+                id: {
+                    in: cardsToRepeatIds,
+                },
+            },
+        });
+
+        return cardsToRepeat;
+    }
+
+    async onEndRepeat(userId: string, cardId: string) {
+        const card = await db.userCard.findFirst({
+            where: {
+                userId,
+                cardId,
+            },
+        });
+
+        if (!card) {
+            return {
+                message: `Карточки с id ${cardId} для такого пользователя не существует`,
+            };
+        }
+
+        const reviewHours: Record<number, number> = {
+            0: 2,
+            1: 6,
+            2: 24,
+            3: 48,
+            4: 96,
+            5: 192,
+            6: 384,
+            7: 768,
+            8: 100_000,
+        };
+
+        const hours = reviewHours[card.reviewCount];
+
+        if (hours === undefined) {
+            return {
+                message:
+                    "Ошибка при выставлении hours для следующего повторения",
+            };
+        }
+
+        const now = new Date();
+        const nextReview = new Date(now.getTime() + hours * 60 * 60000);
+
+        const repeatedCard = await db.userCard.update({
+            where: {
+                id: card.id,
+            },
+            data: {
+                reviewCount: {
+                    increment: 1,
+                },
+                nextReview,
+                status: card.reviewCount === 8 ? "MEMORIZED" : "LEARNING",
+            },
+        });
+
+        return repeatedCard;
+    }
 }
 
 export const cardService = new CardService();

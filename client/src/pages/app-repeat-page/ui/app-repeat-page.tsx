@@ -1,7 +1,9 @@
 import { memo } from "react";
 
+import { CardRepeat } from "@/features/card-repeat";
+
 const AppRepeatPage = () => {
-    return <div>app-repeat-page</div>;
+    return <CardRepeat />;
 };
 
 export default memo(AppRepeatPage);
