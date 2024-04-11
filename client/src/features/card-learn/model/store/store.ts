@@ -8,7 +8,6 @@ import $api from "@/shared/api/api";
 
 export class CardStore {
     card: Card | null = null;
-    cardsToRepeat: Card[] | null = null;
     isLoading = false;
 
     constructor() {
@@ -41,21 +40,5 @@ export class CardStore {
     async onEndLearn(userId: string, cardId: string) {
         await $api.patch(`/cards/end-learn/${userId}`, { cardId });
         this.getCardsToLearn(userId);
-    }
-
-    async getCardsToRepeat(userId: string) {
-        this.isLoading = true;
-        try {
-            const response = await $api.get(`/cards/repeat/${userId}`);
-
-            runInAction(() => {
-                this.cardsToRepeat = response.data;
-                this.isLoading = false;
-            });
-        } catch (error) {
-            runInAction(() => {
-                this.isLoading = false;
-            });
-        }
     }
 }
