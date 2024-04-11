@@ -80,7 +80,7 @@ export const LearnBlock = observer(
                     </SectionMenuItem>
 
                     <SectionMenuItem
-                        to="/"
+                        to="/app/repeat"
                         className="border-b-background border-b-2"
                     >
                         <HistoryIcon className="text-yellow-300" />
