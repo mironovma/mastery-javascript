@@ -24,13 +24,11 @@ export class CardCategoryStore {
 
             runInAction(() => {
                 this.categories = response.data;
+                this.isLoading = false;
             });
         } catch (error) {
             runInAction(() => {
                 this.error = "Не удалось загрузить категории";
-            });
-        } finally {
-            runInAction(() => {
                 this.isLoading = false;
             });
         }

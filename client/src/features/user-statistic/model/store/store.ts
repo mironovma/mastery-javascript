@@ -26,13 +26,13 @@ export class UserStatisticStore {
             const response = await $api.get(`/statistic/today/${userId}`);
             runInAction(() => {
                 this.statisticToday = response.data;
+                this.isLoading = false;
             });
         } catch (error) {
-            return { error };
-        } finally {
             runInAction(() => {
                 this.isLoading = false;
             });
+            return { error };
         }
     }
 

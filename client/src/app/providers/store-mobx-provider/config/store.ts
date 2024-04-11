@@ -26,26 +26,10 @@ export class RootStore {
             (userId) => {
                 if (userId) {
                     this.card.getCardsToLearn(userId);
+                    this.card.getCardsToRepeat(userId);
                     this.category.initializeUserCategories(userId);
                     this.settings.getUserSettings(userId);
                     this.statistic.getUserStatisticToday(userId);
-
-                    /**
-                     * Чтобы в компонентах не писать бойлерплейт код с useEffect, 
-                     * где при маунте компонента получаем что-то (категории, настройки) в зависимости
-                     * от user id.
-                     * 
-                     * Старый код выглядел бы примерно так:
-                     * 
-                        const { category, auth } = useMobxStore();
-
-                        useEffect(() => {
-                            if (auth.user.id) {
-                                category.initializeUserCategories(auth.user.id);
-                            }
-                        }, [auth.user.id, category]);
-                    * А теперь этот бойлерплейт в каждом компоненте не нужен.
-                     */
                 }
             },
         );
