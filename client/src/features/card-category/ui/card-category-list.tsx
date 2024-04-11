@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 
 import { CardCategory } from "@/entities/card-category";
 
@@ -10,6 +11,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 
 export const CardCategoryList = observer(() => {
     const { category, auth } = useMobxStore();
+    const navigate = useNavigate();
 
     const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
         category.updateCategorySelection(id, e.target.checked);
@@ -17,6 +19,7 @@ export const CardCategoryList = observer(() => {
 
     const onSaveUserCategories = () => {
         category.saveUserCategories(auth.user.id);
+        navigate("/app");
     };
 
     if (category.isLoading) {
