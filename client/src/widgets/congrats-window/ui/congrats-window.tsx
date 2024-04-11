@@ -9,11 +9,11 @@ import CongratulationsImg from "../../../../public/assets/img/target.png";
 
 interface CongratsWindowProps {
     className?: string;
-    dailyCardLimitToLearn: number;
+    learnedCardsAmount: number;
 }
 
 export const CongratsWindow = memo(
-    ({ className, dailyCardLimitToLearn }: CongratsWindowProps) => {
+    ({ className, learnedCardsAmount }: CongratsWindowProps) => {
         const { t } = useTranslation();
         const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ export const CongratsWindow = memo(
                         <p className="mt-4 text-lg text-pretty">
                             Сегодня вы выучили{" "}
                             {t("кол-во выученных сегодня", {
-                                count: dailyCardLimitToLearn,
+                                count: learnedCardsAmount,
                             })}
                             . Продолжайте в том же духе!
                         </p>
