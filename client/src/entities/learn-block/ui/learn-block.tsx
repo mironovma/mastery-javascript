@@ -20,22 +20,24 @@ interface LearnBlockProps {
 }
 
 export const LearnBlock = observer(
-    ({ className, learnedToday, dailyCardsToLearn }: LearnBlockProps) => {
+    ({ className, learnedToday = 0, dailyCardsToLearn }: LearnBlockProps) => {
         const { t } = useTranslation();
-        const { category, statistic } = useMobxStore();
+        const { category } = useMobxStore();
 
         const selectedCategories = category.userCategories.length;
 
-        if (category.isLoading || statistic.isLoading) {
+        if (category.isLoading) {
             return (
                 <div className={className}>
                     <SectionMenuHeader>
                         Изучение новых карточек
                     </SectionMenuHeader>
-                    <Skeleton className="w-full h-16" />
-                    <Skeleton className="w-full h-16" />
-                    <Skeleton className="w-full h-16" />
-                    <Skeleton className="w-full h-16" />
+                    <div className="flex flex-col gap-[1px]">
+                        <Skeleton className="w-full h-16" />
+                        <Skeleton className="w-full h-16" />
+                        <Skeleton className="w-full h-16" />
+                        <Skeleton className="w-full h-16" />
+                    </div>
                 </div>
             );
         }

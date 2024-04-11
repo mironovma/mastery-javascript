@@ -12,8 +12,7 @@ export const CardLearn = observer(() => {
         settings.isLoading ||
         card.isLoading ||
         statistic.isLoading ||
-        category.isLoading ||
-        !card.card
+        category.isLoading
     ) {
         return <Skeleton className="w-full h-card" />;
     }
@@ -42,10 +41,10 @@ export const CardLearn = observer(() => {
     return (
         <Card
             category={categoryName}
-            question={card.card.question}
-            shortAnswer={card.card.shortAnswer}
-            detailedAnswer={card.card.detailedAnswer}
-            options={card.card.options}
+            question={card.card!.question}
+            shortAnswer={card.card!.shortAnswer}
+            detailedAnswer={card.card!.detailedAnswer}
+            options={card.card!.options}
             acceptButtonLabel="Я уже знаю эту карточку"
             declineButtonLabel="Начать учить карточку"
             onAccept={() => card.onEndLearn(auth.user.id, card.card!.id)}

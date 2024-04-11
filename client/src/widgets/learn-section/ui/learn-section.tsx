@@ -6,6 +6,7 @@ import { useMobxStore } from "@/shared/hooks/useMobxStore";
 
 export const LearnSection = memo(() => {
     const { auth, settings, statistic } = useMobxStore();
+
     const dailyCards = settings.userSettings?.[0].settings.dailyCards;
     const [dailyCardsToLearn, setDailyCardsToLearn] = useState<
         number | undefined
@@ -15,8 +16,6 @@ export const LearnSection = memo(() => {
         settings.setNewUserSettings(auth.user.id, {
             dailyCards: dailyCardsToLearn!,
         });
-
-        console.log(dailyCardsToLearn);
     }, [dailyCardsToLearn]);
 
     const onSetNewDailyCardsToLearn = useCallback((amount: number) => {

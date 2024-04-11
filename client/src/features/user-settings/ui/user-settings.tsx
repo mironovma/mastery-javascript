@@ -42,7 +42,7 @@ interface UserSettingsProps {
 export const UserSettings = observer(
     ({
         className,
-        learnedToday,
+        learnedToday = 0,
         dailyCardsToLearn,
         onSetNewDailyCardsToLearn,
         onSaveNewUserSettings,
