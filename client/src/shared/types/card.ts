@@ -1,10 +1,8 @@
 export interface Card {
     id: string;
+    categoryId: string;
     question: string;
     shortAnswer: string;
-    detailedAnswer: string;
-    options: string[];
-    categoryId: string;
-    // category:
-    // userCards: []
+    detailedAnswer?: string;
+    options?: Array<{ answer: string; isTrue: boolean }>;
 }

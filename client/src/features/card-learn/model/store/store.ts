@@ -1,14 +1,10 @@
-import $api from "@/shared/api/api";
 import { makeAutoObservable, runInAction } from "mobx";
 
-interface Card {
-    id: string;
-    categoryId: string;
-    question: string;
-    shortAnswer: string;
-    detailedAnswer?: string;
-    options?: Array<{ answer: string; isTrue: boolean }>;
-}
+import type { Card } from "@/shared/types/card";
+
+import $api from "@/shared/api/api";
+
+// TODO: переименовать в CardLearnStore
 
 export class CardStore {
     card: Card | null = null;
