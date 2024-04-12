@@ -7,7 +7,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 import { useMobxStore } from "@/shared/hooks/useMobxStore";
 
 export const CardRepeat = observer(() => {
-    const { auth, category, cardsToRepeat } = useMobxStore();
+    const { auth, category, cardsToRepeat, statistic } = useMobxStore();
 
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
 
@@ -20,17 +20,31 @@ export const CardRepeat = observer(() => {
         cardsToRepeat.cardsToRepeat.length === 0 ||
         currentCardIndex >= cardsToRepeat.cardsToRepeat.length
     ) {
-        return <CongratsWindow learnedCardsAmount={0} />;
+        return (
+            <CongratsWindow
+                description="повторили"
+                cardsAmount={statistic.statisticToday!.repeatedCards}
+            />
+        );
     }
 
-    const categoryItem = category.userCategories.find(
-        (cat) =>
-            cat.id ===
-            cardsToRepeat.cardsToRepeat?.[currentCardIndex].categoryId,
-    );
+    let categoryItem;
+
+    if (cardsToRepeat.cardsToRepeat.length) {
+        categoryItem = category.userCategories.find(
+            (cat) =>
+                cat.id ===
+                cardsToRepeat.cardsToRepeat?.[currentCardIndex].categoryId,
+        );
+    }
 
     if (!categoryItem) {
-        return <Skeleton className="w-full h-card" />;
+        return (
+            <CongratsWindow
+                description="повторили"
+                cardsAmount={statistic.statisticToday!.repeatedCards}
+            />
+        );
     }
 
     const categoryName = categoryItem.name;

@@ -3,17 +3,23 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/shared/ui/button";
+import { Confetti } from "@/shared/ui/custom/confetti";
 // TODO: Сделать алиасы для изображений и в конфиге вебпака их копировать в общий бандл
 // + сделать, чтобы не только ссылкой можно было получать изображения, но и как компонент (см. file-loader webpack)
 import CongratulationsImg from "../../../../public/assets/img/target.png";
 
 interface CongratsWindowProps {
     className?: string;
-    learnedCardsAmount: number;
+    cardsAmount: number;
+    description: "выучили" | "повторили";
 }
 
 export const CongratsWindow = memo(
-    ({ className, learnedCardsAmount }: CongratsWindowProps) => {
+    ({
+        className,
+        cardsAmount,
+        description = "выучили",
+    }: CongratsWindowProps) => {
         const { t } = useTranslation();
         const navigate = useNavigate();
 
@@ -33,9 +39,9 @@ export const CongratsWindow = memo(
                             Поздравляем!
                         </h2>
                         <p className="mt-4 text-lg text-pretty">
-                            Сегодня вы выучили{" "}
+                            Сегодня вы {description}{" "}
                             {t("кол-во выученных сегодня", {
-                                count: learnedCardsAmount,
+                                count: cardsAmount,
                             })}
                             . Продолжайте в том же духе!
                         </p>
@@ -55,6 +61,7 @@ export const CongratsWindow = memo(
                         </Button>
                     </div>
                 </div>
+                <Confetti />
             </div>
         );
     },

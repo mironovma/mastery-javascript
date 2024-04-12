@@ -36,7 +36,12 @@ export const CardLearn = observer(() => {
         statistic.statisticToday?.newCards !== undefined &&
         statistic.statisticToday.newCards >= dailyCardLimitToLearn
     ) {
-        return <CongratsWindow learnedCardsAmount={statistic.statisticToday.newCards} />;
+        return (
+            <CongratsWindow
+                description="выучили"
+                cardsAmount={statistic.statisticToday.newCards}
+            />
+        );
     }
 
     return (
