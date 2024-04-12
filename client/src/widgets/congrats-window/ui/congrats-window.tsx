@@ -48,10 +48,15 @@ export const CongratsWindow = memo(
                     </div>
 
                     <div className="mt-auto mb-0 mx-auto flex flex-col">
-                        {/* TODO: сделать функционал, которые будет просто перекидывать на страницу для повторения */}
-                        <Button variant="outline" size="lg" disabled>
-                            Повторить выученные карточки
-                        </Button>
+                        {description === "выучили" && (
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={() => navigate("/app/repeat")}
+                            >
+                                Повторить выученные карточки
+                            </Button>
+                        )}
                         <Button
                             variant="link"
                             size="lg"

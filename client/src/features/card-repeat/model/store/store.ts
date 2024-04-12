@@ -5,6 +5,12 @@ import $api from "@/shared/api/api";
 
 export class CardRepeatStore {
     cardsToRepeat: Card[] | null = null;
+
+    cardsToRepeatInfo: {
+        cardsToRepeatLength: number;
+        minsLeftToRepeat: number;
+    } | null = null;
+
     isLoading: boolean = false;
 
     constructor() {
@@ -42,6 +48,22 @@ export class CardRepeatStore {
             await $api.post("/cards/end-repeat", { userId, cardId });
 
             runInAction(() => {
+                this.isLoading = false;
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.isLoading = false;
+            });
+        }
+    }
+
+    async getCardToRepeatInfo(userId: string) {
+        this.isLoading = true;
+        try {
+            const response = await $api.get(`/cards/repeat-info/${userId}`);
+
+            runInAction(() => {
+                this.cardsToRepeatInfo = response.data;
                 this.isLoading = false;
             });
         } catch (error) {

@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 import { LearnBlock } from "@/entities/learn-block";
 import { UserSettings } from "@/features/user-settings";
@@ -6,12 +6,20 @@ import { useMobxStore } from "@/shared/hooks/useMobxStore";
 import { observer } from "mobx-react-lite";
 
 const AppPage = observer(() => {
-    const { auth, settings, statistic } = useMobxStore();
+    const { auth, settings, statistic, cardsToRepeat } = useMobxStore();
 
     const dailyCards = settings.userSettings?.[0].settings.dailyCards;
     const [dailyCardsToLearn, setDailyCardsToLearn] = useState<
         number | undefined
     >(dailyCards);
+
+    const cardsToRepeatLength = useMemo(() => {
+        return cardsToRepeat.cardsToRepeatInfo?.cardsToRepeatLength;
+    }, [cardsToRepeat.cardsToRepeatInfo?.cardsToRepeatLength]);
+
+    const timeToRepeat = useMemo(() => {
+        return cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat;
+    }, [cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat]);
 
     const onSaveNewUserSettings = useCallback(() => {
         settings.setNewUserSettings(auth.user.id, {
@@ -28,6 +36,8 @@ const AppPage = observer(() => {
             <LearnBlock
                 dailyCardsToLearn={dailyCardsToLearn}
                 learnedToday={statistic.statisticToday?.newCards}
+                cardsToRepeat={cardsToRepeatLength}
+                timeToRepeat={timeToRepeat}
             />
             <UserSettings
                 dailyCardsToLearn={dailyCardsToLearn}

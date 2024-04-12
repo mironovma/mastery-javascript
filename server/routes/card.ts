@@ -10,6 +10,10 @@ cardRouter.post("/cards/start-learn/:userId", cardController.onStartLearn);
 cardRouter.patch("/cards/end-learn/:userId", cardController.onEndLearn);
 
 cardRouter.get("/cards/repeat/:userId", cardController.getCardToRepeat);
+cardRouter.get(
+    "/cards/repeat-info/:userId",
+    cardController.getCardToRepeatInfo
+);
 
 cardRouter.post("/cards/end-repeat", cardController.onEndRepeat);
 

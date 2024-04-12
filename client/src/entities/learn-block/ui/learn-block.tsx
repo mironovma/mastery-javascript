@@ -17,10 +17,18 @@ interface LearnBlockProps {
     className?: string;
     learnedToday?: number;
     dailyCardsToLearn?: number;
+    cardsToRepeat?: number;
+    timeToRepeat?: number;
 }
 
 export const LearnBlock = observer(
-    ({ className, learnedToday = 0, dailyCardsToLearn }: LearnBlockProps) => {
+    ({
+        className,
+        learnedToday = 0,
+        dailyCardsToLearn,
+        cardsToRepeat = 0,
+        timeToRepeat = 0,
+    }: LearnBlockProps) => {
         const { t } = useTranslation();
         const { category } = useMobxStore();
 
@@ -80,7 +88,7 @@ export const LearnBlock = observer(
                     </SectionMenuItem>
 
                     <SectionMenuItem
-                        to="/app/repeat"
+                        to={cardsToRepeat === 0 ? "" : "/app/repeat"}
                         className="border-b-background border-b-2"
                     >
                         <HistoryIcon className="text-yellow-300" />
@@ -89,7 +97,9 @@ export const LearnBlock = observer(
                                 Повторить карточки
                             </SectionMenuItemTitle>
                             <SectionMenuItemDescription>
-                                Карточки для повторения появятся через 3 часа
+                                {cardsToRepeat === 0
+                                    ? `Осталось ${timeToRepeat < 60 ? `${timeToRepeat} мин.` : `${Math.floor(timeToRepeat / 60)} ч.`} до повторения`
+                                    : `Карточек для повторения: ${cardsToRepeat}`}
                             </SectionMenuItemDescription>
                         </SectionMenuItemText>
                     </SectionMenuItem>

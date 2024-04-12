@@ -30,6 +30,7 @@ export class RootStore {
                 if (userId) {
                     this.card.getCardsToLearn(userId);
                     this.cardsToRepeat.getCardsToRepeat(userId);
+                    this.cardsToRepeat.getCardToRepeatInfo(userId);
                     this.category.initializeUserCategories(userId);
                     this.settings.getUserSettings(userId);
                     this.statistic.getUserStatisticToday(userId);

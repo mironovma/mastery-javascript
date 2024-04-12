@@ -1,6 +1,5 @@
 import { Card } from "@prisma/client";
 import { db } from "../helpers/db";
-import { ApiError } from "../exceptions/api-error";
 
 class CardService {
     async getCardToLearn(userId: string) {
@@ -268,7 +267,60 @@ class CardService {
             },
         });
 
+        const userStatistic = await db.userStatistics.findFirst({
+            where: {
+                userId,
+            },
+        });
+
+        await db.userStatistics.update({
+            where: {
+                id: userStatistic?.id,
+            },
+            data: {
+                repeatedCards: {
+                    increment: 1,
+                },
+            },
+        });
+
         return repeatedCard;
+    }
+
+    async getCardToRepeatInfo(userId: string) {
+        const now = new Date();
+
+        const userCards = await db.userCard.findMany({
+            where: {
+                userId,
+                status: "LEARNING",
+            },
+        });
+
+        if (!userCards) {
+            return { message: "Все карточки MEMORIZED. Начните учить еще." };
+        }
+
+        const cardsToRepeatLength = userCards.filter(
+            (card) => card.nextReview < now
+        ).length;
+
+        let minsLeftToRepeat;
+
+        if (!cardsToRepeatLength) {
+            const firstCardToRepeatDate = userCards.sort(
+                (card) => now.getHours() - card.nextReview.getHours()
+            )[0].nextReview;
+
+            minsLeftToRepeat = Math.floor(
+                (firstCardToRepeatDate.getTime() - now.getTime()) / 1000 / 60
+            );
+        }
+
+        return {
+            cardsToRepeatLength,
+            minsLeftToRepeat,
+        };
     }
 }
 

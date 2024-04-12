@@ -61,6 +61,18 @@ class CardController {
             next(error);
         }
     }
+
+    async getCardToRepeatInfo(req: Request, res: Response, next: NextFunction) {
+        try {
+        const { userId } = req.params;
+        const cardToRepeatInfo = await cardService.getCardToRepeatInfo(userId);
+
+        return res.json(cardToRepeatInfo);
+        } catch (error) {
+            next(error);
+        }
+    }
+    
 }
 
 export const cardController = new CardController();
