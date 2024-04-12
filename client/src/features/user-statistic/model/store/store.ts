@@ -43,7 +43,7 @@ export class UserStatisticStore {
         this.isLoading = true;
 
         try {
-            const response = await $api.post(`/statistic/today/${userId}`);
+            const response = await $api.post("/statistic/today", { userId });
             runInAction(() => {
                 this.statisticToday = response.data;
             });

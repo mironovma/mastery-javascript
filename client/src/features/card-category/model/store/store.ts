@@ -89,7 +89,8 @@ export class CardCategoryStore {
                 ),
             }));
 
-            await $api.post(`/categories/${userId}`, {
+            await $api.post("/categories", {
+                userId,
                 categories: categoriesToSave,
             });
         } catch (error) {

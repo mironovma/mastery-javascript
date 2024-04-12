@@ -9,7 +9,7 @@ statisticRouter.get(
 );
 
 statisticRouter.post(
-    "/statistic/today/:userId",
+    "/statistic/today",
     statisticController.createUserStatisticToday
 );
 

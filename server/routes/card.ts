@@ -6,8 +6,8 @@ const cardRouter = Router();
 
 cardRouter.get("/cards/learning/:userId", cardController.getCardToLearn);
 
-cardRouter.post("/cards/start-learn/:userId", cardController.onStartLearn);
-cardRouter.patch("/cards/end-learn/:userId", cardController.onEndLearn);
+cardRouter.post("/cards/start-learn", cardController.onStartLearn);
+cardRouter.patch("/cards/end-learn", cardController.onEndLearn);
 
 cardRouter.get("/cards/repeat/:userId", cardController.getCardToRepeat);
 cardRouter.get(

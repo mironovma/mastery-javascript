@@ -24,7 +24,7 @@ class StatisticController {
         next: NextFunction
     ) {
         try {
-            const { userId } = req.params;
+            const { userId } = req.body;
             const statisticToday =
                 await statisticService.createUserStatisticToday(userId);
             return res.json(statisticToday);

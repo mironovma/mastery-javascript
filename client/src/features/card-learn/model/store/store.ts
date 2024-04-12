@@ -33,12 +33,12 @@ export class CardStore {
     }
 
     async onStartLearn(userId: string, cardId: string) {
-        await $api.post(`/cards/start-learn/${userId}`, { cardId });
+        await $api.post("/cards/start-learn", { userId, cardId });
         this.getCardsToLearn(userId); // Заново получаем карточки для запоминания, если лимит не превышен
     }
 
     async onEndLearn(userId: string, cardId: string) {
-        await $api.patch(`/cards/end-learn/${userId}`, { cardId });
+        await $api.patch("/cards/end-learn", { userId, cardId });
         this.getCardsToLearn(userId);
     }
 }

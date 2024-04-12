@@ -17,8 +17,7 @@ class CardController {
     // Отправляем в БД для повторения (учим карточку)
     async onStartLearn(req: Request, res: Response, next: NextFunction) {
         try {
-            const { userId } = req.params;
-            const { cardId } = req.body;
+            const { userId, cardId } = req.body;
             await cardService.onStartLearn(userId, cardId);
 
             return res.json("Success onStartLearn");
@@ -30,8 +29,7 @@ class CardController {
     // Отпрвляем в БД выученных карточек (в повторениях ее не будет)
     async onEndLearn(req: Request, res: Response, next: NextFunction) {
         try {
-            const { userId } = req.params;
-            const { cardId } = req.body;
+            const { userId, cardId } = req.body;
             await cardService.onEndLearn(userId, cardId);
 
             return res.json("Success onEndLearn");
@@ -64,15 +62,16 @@ class CardController {
 
     async getCardToRepeatInfo(req: Request, res: Response, next: NextFunction) {
         try {
-        const { userId } = req.params;
-        const cardToRepeatInfo = await cardService.getCardToRepeatInfo(userId);
+            const { userId } = req.params;
+            const cardToRepeatInfo = await cardService.getCardToRepeatInfo(
+                userId
+            );
 
-        return res.json(cardToRepeatInfo);
+            return res.json(cardToRepeatInfo);
         } catch (error) {
             next(error);
         }
     }
-    
 }
 
 export const cardController = new CardController();

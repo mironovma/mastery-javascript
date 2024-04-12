@@ -27,8 +27,7 @@ class CategoryController {
 
     async setUserCategories(req: Request, res: Response, next: NextFunction) {
         try {
-            const { userId } = req.params;
-            const { categories } = req.body;
+            const { userId, categories } = req.body;
 
             const userCategories = await categoryService.setUserCategories(
                 userId,
