@@ -33,7 +33,7 @@ export const CardCategoryList = observer(() => {
     }
 
     return (
-        <>
+        <div>
             <SectionMenuHeader>
                 Выберите категории для изучения
             </SectionMenuHeader>
@@ -42,12 +42,11 @@ export const CardCategoryList = observer(() => {
                 <CardCategory
                     className="mb-[2px]"
                     key={cat.id}
-                    name={cat.name}
+                    category={cat}
                     isChecked={category.userCategories.some(
                         (userCat) => userCat.id === cat.id,
                     )}
-                    description={cat.description}
-                    onChange={onChange(cat.id)}
+                    onChange={onChange}
                 />
             ))}
 
@@ -59,6 +58,6 @@ export const CardCategoryList = observer(() => {
                     Сохранить
                 </Button>
             </div>
-        </>
+        </div>
     );
 });

@@ -25,7 +25,7 @@ export const LearnBlock = observer(
     ({
         className,
         learnedToday = 0,
-        dailyCardsToLearn,
+        dailyCardsToLearn = 0,
         cardsToRepeat = 0,
         timeToRepeat = 0,
     }: LearnBlockProps) => {
@@ -72,7 +72,11 @@ export const LearnBlock = observer(
                     </SectionMenuItem>
 
                     <SectionMenuItem
-                        to="/app/learn"
+                        to={
+                            learnedToday >= dailyCardsToLearn
+                                ? ""
+                                : "/app/learn"
+                        }
                         className="border-b-background border-b-2"
                     >
                         <CirclePlusIcon className="text-rose-400" />

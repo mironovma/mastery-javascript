@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 import { LearnBlock } from "@/entities/learn-block";
 import { UserSettings } from "@/features/user-settings";
@@ -8,24 +8,19 @@ import { observer } from "mobx-react-lite";
 const AppPage = observer(() => {
     const { auth, settings, statistic, cardsToRepeat } = useMobxStore();
 
-    const dailyCards = settings.userSettings?.[0].settings.dailyCards;
-    const [dailyCardsToLearn, setDailyCardsToLearn] = useState<
-        number | undefined
-    >(dailyCards);
+    const [dailyCardsToLearn, setDailyCardsToLearn] = useState(
+        settings.userSettings?.[0].settings.dailyCards,
+    );
 
-    const cardsToRepeatLength = useMemo(() => {
-        return cardsToRepeat.cardsToRepeatInfo?.cardsToRepeatLength;
-    }, [cardsToRepeat.cardsToRepeatInfo?.cardsToRepeatLength]);
-
-    const timeToRepeat = useMemo(() => {
-        return cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat;
-    }, [cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat]);
+    useEffect(() => {
+        setDailyCardsToLearn(settings.userSettings?.[0].settings.dailyCards);
+    }, [settings.userSettings]);
 
     const onSaveNewUserSettings = useCallback(() => {
         settings.setNewUserSettings(auth.user.id, {
             dailyCards: dailyCardsToLearn!,
         });
-    }, [dailyCardsToLearn]);
+    }, [auth.user.id, dailyCardsToLearn, settings]);
 
     const onSetNewDailyCardsToLearn = useCallback((amount: number) => {
         setDailyCardsToLearn(amount);
@@ -36,8 +31,10 @@ const AppPage = observer(() => {
             <LearnBlock
                 dailyCardsToLearn={dailyCardsToLearn}
                 learnedToday={statistic.statisticToday?.newCards}
-                cardsToRepeat={cardsToRepeatLength}
-                timeToRepeat={timeToRepeat}
+                cardsToRepeat={
+                    cardsToRepeat.cardsToRepeatInfo?.cardsToRepeatLength
+                }
+                timeToRepeat={cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat}
             />
             <UserSettings
                 dailyCardsToLearn={dailyCardsToLearn}
