@@ -34,6 +34,10 @@ export const CardLearn = observer(() => {
     }
 
     if (!card.card) {
+        /**
+         * TODO: вместо такого сообщения, реализовать компонен в который будет кидать,
+         * если вдруг будет ситуация, когда пользователь выучит все карточки из БД
+         */
         return (
             <Skeleton className="w-full h-card flex justify-center items-center">
                 <p className="text-center w-4/5">
@@ -51,7 +55,7 @@ export const CardLearn = observer(() => {
 
     if (!categoryItem) {
         return (
-            <Skeleton className="w-full h-card">
+            <Skeleton className="w-full h-card flex justify-center items-center">
                 <p className="text-center w-4/5">
                     Категория не была найдена или нет выбранных категорий для
                     изучения 😞
