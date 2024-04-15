@@ -19,6 +19,8 @@ export const CardRepeat = observer(() => {
     }
 
     if (!cards.length || currentCardIndex >= cards.length) {
+        statistic.getUserStatisticToday(auth.user.id);
+
         return (
             <CongratsWindow
                 description="повторили"
