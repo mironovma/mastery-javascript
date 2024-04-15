@@ -14,11 +14,6 @@ import {
 } from "@/shared/ui/drawer";
 import { Button } from "@/shared/ui/button";
 
-/**
- * TODO: реализовать отображение ежедневных карточек к изучению
- * в виде окружности с секциями
- */
-
 const dailyCardsToLearnButtons = [
     { variant: 1 },
     { variant: 2 },
@@ -47,14 +42,42 @@ export const UserSettings = observer(
         onSetNewDailyCardsToLearn,
         onSaveNewUserSettings,
     }: UserSettingsProps) => {
+        const circlePercentage = dailyCardsToLearn
+            ? (learnedToday / dailyCardsToLearn) * 100
+            : 0;
         return (
             <div className={className}>
                 <SectionMenuHeader>Настройки</SectionMenuHeader>
                 <SectionMenuWrapper>
                     <SectionMenuItem className="border-b-background border-b-2">
                         <div className="flex items-center gap-2">
-                            {/* TODO: окружнось с секциями в зависимости от dailyCardsToLearn и  */}
-                            <div className="w-14 h-14 rounded-full bg-transparent border-4 border-rose-400" />
+                            <svg
+                                width="56"
+                                height="56"
+                                viewBox="0 0 36 36"
+                                className="circular-chart"
+                            >
+                                <path
+                                    className="circle-bg"
+                                    d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="transparent"
+                                    strokeWidth="4"
+                                    strokeDasharray="100, 100"
+                                />
+                                <path
+                                    className="circle"
+                                    d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#fb7185"
+                                    strokeWidth="4"
+                                    strokeDasharray={`${circlePercentage}, 100`}
+                                />
+                            </svg>
                             <div className="flex flex-col">
                                 <div>Выучено сегодня</div>
                                 <div className="flex text-2xl">

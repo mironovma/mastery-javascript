@@ -8,33 +8,22 @@ import { Skeleton } from "@/shared/ui/skeleton";
 export const CardLearn = observer(() => {
     const { auth, card, category, settings, statistic } = useMobxStore();
 
-    if (
+    const isLoading =
         settings.isLoading ||
         card.isLoading ||
         statistic.isLoading ||
-        category.isLoading ||
-        !card.card
-    ) {
+        category.isLoading;
+
+    if (isLoading) {
         return <Skeleton className="w-full h-card" />;
     }
 
-    const dailyCardLimitToLearn =
-        settings.userSettings?.[0].settings.dailyCards;
-
-    const categoryItem = category.userCategories.find(
-        (cat) => cat.id === card.card?.categoryId,
-    );
-
-    if (!categoryItem) {
-        return <Skeleton className="w-full h-card" />;
-    }
-
-    const categoryName = categoryItem.name;
+    const { dailyCards } = settings.userSettings?.[0].settings ?? {};
 
     if (
-        dailyCardLimitToLearn !== undefined &&
+        dailyCards !== undefined &&
         statistic.statisticToday?.newCards !== undefined &&
-        statistic.statisticToday.newCards >= dailyCardLimitToLearn
+        statistic.statisticToday.newCards >= dailyCards
     ) {
         return (
             <CongratsWindow
@@ -43,6 +32,35 @@ export const CardLearn = observer(() => {
             />
         );
     }
+
+    if (!card.card) {
+        return (
+            <Skeleton className="w-full h-card flex justify-center items-center">
+                <p className="text-center w-4/5">
+                    Все карточки для изучения закончились 😞 Ожидайте, когда
+                    комьюнити добавит новые карточки. А сейчас попробуйте
+                    повторить уже изученные 😃
+                </p>
+            </Skeleton>
+        );
+    }
+
+    const categoryItem = category.userCategories.find(
+        (cat) => cat.id === card.card?.categoryId,
+    );
+
+    if (!categoryItem) {
+        return (
+            <Skeleton className="w-full h-card">
+                <p className="text-center w-4/5">
+                    Категория не была найдена или нет выбранных категорий для
+                    изучения 😞
+                </p>
+            </Skeleton>
+        );
+    }
+
+    const categoryName = categoryItem.name;
 
     return (
         <Card

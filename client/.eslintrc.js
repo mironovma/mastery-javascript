@@ -42,6 +42,7 @@ module.exports = {
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/unbound-method": "off",
     },
     ignorePatterns: [".eslintrc.js", "src/shared/ui/*.tsx"],
 };

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
 import { Code2Icon } from "lucide-react";
 
@@ -12,11 +12,13 @@ import {
 
 interface CardCategoryProps {
     className?: string;
-    name: string;
-    description?: string;
-
+    category: {
+        id: string;
+        name: string;
+        description?: string;
+    };
     isChecked: boolean;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (id: string) => (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -24,34 +26,24 @@ interface CardCategoryProps {
  */
 
 export const CardCategory = observer(
-    ({
-        className,
-        name,
-        description,
-        isChecked,
-        onChange,
-    }: CardCategoryProps) => {
-        const [isCheckedInput, setIsCheckedInput] = useState<boolean>(false);
-
-        useEffect(() => {
-            setIsCheckedInput(isChecked);
-        }, [isChecked]);
-
+    ({ className, category, isChecked, onChange }: CardCategoryProps) => {
         return (
             <SectionMenuWrapper className={className}>
-                <SectionMenuItem to={""}>
+                <SectionMenuItem>
                     <Code2Icon />
                     <SectionMenuItemText>
-                        <SectionMenuItemTitle>{name}</SectionMenuItemTitle>
+                        <SectionMenuItemTitle>
+                            {category.name}
+                        </SectionMenuItemTitle>
                         <SectionMenuItemDescription>
-                            {description}
+                            {category.description}
                         </SectionMenuItemDescription>
                     </SectionMenuItemText>
                     <input
                         type="checkbox"
                         className="ml-auto w-5 h-5 checked:accent-sky-700"
-                        checked={isCheckedInput}
-                        onChange={onChange}
+                        checked={isChecked}
+                        onChange={onChange(category.id)}
                     />
                 </SectionMenuItem>
             </SectionMenuWrapper>
