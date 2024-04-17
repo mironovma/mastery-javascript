@@ -63,7 +63,7 @@ export const UserSettings = observer(
                                 a 15.9155 15.9155 0 0 1 0 31.831
                                 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
-                                    stroke="transparent"
+                                    stroke="rgba(0, 0, 0, .2)"
                                     strokeWidth="4"
                                     strokeDasharray="100, 100"
                                 />
