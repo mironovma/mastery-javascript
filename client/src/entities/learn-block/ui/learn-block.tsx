@@ -26,13 +26,20 @@ export const LearnBlock = observer(
         className,
         learnedToday = 0,
         dailyCardsToLearn = 0,
-        cardsToRepeat = 0,
+        cardsToRepeat,
         timeToRepeat = 0,
     }: LearnBlockProps) => {
         const { t } = useTranslation();
         const { category } = useMobxStore();
 
         const selectedCategories = category.userCategories.length;
+
+        const cardsToRepeatInfo =
+            cardsToRepeat === undefined
+                ? "Нет карточек для повторения"
+                : cardsToRepeat === 0
+                  ? `Осталось ${timeToRepeat < 60 ? `${timeToRepeat} мин.` : `${Math.floor(timeToRepeat / 60)} ч.`} до повторения`
+                  : `Карточек для повторения: ${cardsToRepeat}`;
 
         if (category.isLoading) {
             return (
@@ -92,7 +99,7 @@ export const LearnBlock = observer(
                     </SectionMenuItem>
 
                     <SectionMenuItem
-                        to={cardsToRepeat === 0 ? "" : "/app/repeat"}
+                        to={!cardsToRepeat ? "" : "/app/repeat"}
                         className="border-b-background border-b-2"
                     >
                         <HistoryIcon className="text-yellow-300" />
@@ -101,9 +108,7 @@ export const LearnBlock = observer(
                                 Повторить карточки
                             </SectionMenuItemTitle>
                             <SectionMenuItemDescription>
-                                {cardsToRepeat === 0
-                                    ? `Осталось ${timeToRepeat < 60 ? `${timeToRepeat} мин.` : `${Math.floor(timeToRepeat / 60)} ч.`} до повторения`
-                                    : `Карточек для повторения: ${cardsToRepeat}`}
+                                {cardsToRepeatInfo}
                             </SectionMenuItemDescription>
                         </SectionMenuItemText>
                     </SectionMenuItem>

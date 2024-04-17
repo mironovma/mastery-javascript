@@ -158,7 +158,7 @@ class CardService {
                 data: {
                     userId,
                     cardId,
-                    nextReview: "2222-11-11T11:11:11Z",
+                    nextReview: today.toISOString(),
                     status: "MEMORIZED",
                 },
             });
@@ -252,6 +252,7 @@ class CardService {
         }
 
         const now = new Date();
+
         const nextReview = new Date(now.getTime() + hours * 60 * 60000);
 
         const repeatedCard = await db.userCard.update({
@@ -267,22 +268,44 @@ class CardService {
             },
         });
 
+        const dateToday = `${now.getFullYear()}-${String(
+            now.getMonth() + 1
+        ).padStart(2, "0")}-${now.getDate()}`;
+
+        const dateStart = new Date(dateToday);
+        const dateEnd = new Date(dateToday);
+        dateStart.setHours(0, 0, 0, 0);
+        dateEnd.setHours(23, 59, 59, 99);
+
         const userStatistic = await db.userStatistics.findFirst({
             where: {
                 userId,
-            },
-        });
-
-        await db.userStatistics.update({
-            where: {
-                id: userStatistic?.id,
-            },
-            data: {
-                repeatedCards: {
-                    increment: 1,
+                date: {
+                    gte: dateStart,
+                    lte: dateEnd,
                 },
             },
         });
+
+        if (!userStatistic) {
+            await db.userStatistics.create({
+                data: {
+                    userId,
+                    repeatedCards: 1,
+                },
+            });
+        } else {
+            await db.userStatistics.update({
+                where: {
+                    id: userStatistic.id,
+                },
+                data: {
+                    repeatedCards: {
+                        increment: 1,
+                    },
+                },
+            });
+        }
 
         return repeatedCard;
     }
@@ -308,12 +331,15 @@ class CardService {
         let minsLeftToRepeat;
 
         if (!cardsToRepeatLength) {
-            const firstCardToRepeatDate = userCards.sort(
-                (card) => now.getHours() - card.nextReview.getHours()
-            )[0].nextReview;
+            const sortedCardsByDate = userCards.sort(
+                (cardA, cardB) =>
+                    cardA.nextReview.getTime() - cardB.nextReview.getTime()
+            );
 
             minsLeftToRepeat = Math.floor(
-                (firstCardToRepeatDate.getTime() - now.getTime()) / 1000 / 60
+                (sortedCardsByDate[0].nextReview.getTime() - now.getTime()) /
+                    1000 /
+                    60
             );
         }
 
