@@ -1,9 +1,10 @@
 import { memo, useCallback, useEffect, useState } from "react";
-
-import { LearnBlock } from "@/entities/learn-block";
-import { UserSettings } from "@/features/user-settings";
-import { useMobxStore } from "@/shared/hooks/useMobxStore";
 import { observer } from "mobx-react-lite";
+
+import { UserSettings } from "@/features/user-settings";
+import { UserStatistic } from "@/features/user-statistic";
+import { LearnBlock } from "@/entities/learn-block";
+import { useMobxStore } from "@/shared/hooks/useMobxStore";
 
 const AppPage = observer(() => {
     const { auth, settings, statistic, cardsToRepeat } = useMobxStore();
@@ -36,6 +37,7 @@ const AppPage = observer(() => {
                 }
                 timeToRepeat={cardsToRepeat.cardsToRepeatInfo?.minsLeftToRepeat}
             />
+            <UserStatistic />
             <UserSettings
                 dailyCardsToLearn={dailyCardsToLearn}
                 learnedToday={statistic.statisticToday?.newCards}
