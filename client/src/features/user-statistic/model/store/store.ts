@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 
 import $api from "@/shared/api/api";
 
-interface StatisticToday {
+interface Statistic {
     id: string;
     userId: string;
     date: Date;
@@ -12,7 +12,8 @@ interface StatisticToday {
 }
 
 export class UserStatisticStore {
-    statisticToday: StatisticToday | null = null;
+    statisticToday: Statistic | null = null;
+    statisticAll: Statistic[] | null = null;
     isLoading: boolean = false;
 
     constructor() {
@@ -26,6 +27,23 @@ export class UserStatisticStore {
             const response = await $api.get(`/statistic/today/${userId}`);
             runInAction(() => {
                 this.statisticToday = response.data;
+                this.isLoading = false;
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.isLoading = false;
+            });
+            return { error };
+        }
+    }
+
+    async getUserStatisticAll(userId: string) {
+        this.isLoading = true;
+
+        try {
+            const response = await $api.get(`/statistic/all/${userId}`);
+            runInAction(() => {
+                this.statisticAll = response.data;
                 this.isLoading = false;
             });
         } catch (error) {

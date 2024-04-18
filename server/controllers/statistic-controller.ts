@@ -18,6 +18,19 @@ class StatisticController {
         }
     }
 
+    async getUserStatisticAll(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params;
+            const statisticAll = await statisticService.getUserStatisticAll(
+                userId
+            );
+
+            return res.json(statisticAll);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     async createUserStatisticToday(
         req: Request,
         res: Response,

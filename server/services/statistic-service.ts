@@ -26,6 +26,16 @@ class StatisticService {
         return statisticToday;
     }
 
+    async getUserStatisticAll(userId: string) {
+        const statisticAll = await db.userStatistics.findMany({
+            where: {
+                userId,
+            },
+        });
+
+        return statisticAll;
+    }
+
     async createUserStatisticToday(userId: string) {
         const statisticToday = await db.userStatistics.create({
             data: {

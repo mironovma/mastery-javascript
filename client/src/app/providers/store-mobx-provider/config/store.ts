@@ -34,6 +34,7 @@ export class RootStore {
                     this.category.initializeUserCategories(userId);
                     this.settings.getUserSettings(userId);
                     this.statistic.getUserStatisticToday(userId);
+                    this.statistic.getUserStatisticAll(userId);
                 }
             },
         );
@@ -43,6 +44,7 @@ export class RootStore {
             () => this.card.card,
             () => {
                 this.statistic.getUserStatisticToday(this.auth.user.id);
+                this.statistic.getUserStatisticAll(this.auth.user.id);
             },
         );
     }

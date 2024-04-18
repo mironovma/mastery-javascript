@@ -8,6 +8,11 @@ statisticRouter.get(
     statisticController.getUserStatisticToday
 );
 
+statisticRouter.get(
+    "/statistic/all/:userId",
+    statisticController.getUserStatisticAll
+);
+
 statisticRouter.post(
     "/statistic/today",
     statisticController.createUserStatisticToday
