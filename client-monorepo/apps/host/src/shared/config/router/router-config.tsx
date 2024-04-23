@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-ts-expect-error */
 import { RouteProps } from "react-router-dom";
 
 import { MainPage } from "@/pages/main-page";
@@ -7,6 +8,10 @@ import { AppPage } from "@/pages/app-page";
 import { AppCategoryPage } from "@/pages/app-category-page";
 import { AppLearnPage } from "@/pages/app-learn-page";
 import { AppRepeatPage } from "@/pages/app-repeat-page";
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import adminRoutes from "admin/router";
 
 export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
     authOnly?: boolean;
@@ -63,6 +68,8 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
         element: <AppRepeatPage />,
         authOnly: true,
     },
+
+    ...adminRoutes,
 
     [AppRoutes.NOT_FOUND]: {
         path: RoutePath["not-found"],

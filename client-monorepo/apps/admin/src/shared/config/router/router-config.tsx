@@ -1,71 +1,26 @@
 import { RouteProps } from "react-router-dom";
 
-import { MainPage } from "@/pages/main-page";
-import { AuthorizationPage } from "@/pages/authorization-page";
-
-import { AppPage } from "@/pages/app-page";
-import { AppCategoryPage } from "@/pages/app-category-page";
-import { AppLearnPage } from "@/pages/app-learn-page";
-import { AppRepeatPage } from "@/pages/app-repeat-page";
+// TODO: изменить название папки!!!
+import { AdminPage } from "@/pages/main-page";
 
 export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
     authOnly?: boolean;
 }
 
 export enum AppRoutes {
-    MAIN = "main",
-    AUTHORIZATION = "authorization",
-    APP = "app",
-    APP_CATEGORY = "app-category",
-    APP_LEARN = "app-learn",
-    APP_REPEAT = "app-repeat",
-
-    NOT_FOUND = "not-found",
+    ADMIN = "admin",
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.MAIN]: "/",
-    [AppRoutes.AUTHORIZATION]: "/authorization",
-    [AppRoutes.APP]: "/app",
-    [AppRoutes.APP_CATEGORY]: "/app/category",
-    [AppRoutes.APP_LEARN]: "/app/learn",
-    [AppRoutes.APP_REPEAT]: "/app/repeat",
-
-    [AppRoutes.NOT_FOUND]: "/*",
+    [AppRoutes.ADMIN]: "/admin",
 };
 
 export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
-    [AppRoutes.MAIN]: {
-        path: RoutePath.main,
-        element: <MainPage />,
-    },
-    [AppRoutes.AUTHORIZATION]: {
-        path: RoutePath.authorization,
-        element: <AuthorizationPage />,
-    },
-    [AppRoutes.APP]: {
-        path: RoutePath.app,
-        element: <AppPage />,
-        authOnly: true,
-    },
-    [AppRoutes.APP_CATEGORY]: {
-        path: RoutePath["app-category"],
-        element: <AppCategoryPage />,
-        authOnly: true,
-    },
-    [AppRoutes.APP_LEARN]: {
-        path: RoutePath["app-learn"],
-        element: <AppLearnPage />,
-        authOnly: true,
-    },
-    [AppRoutes.APP_REPEAT]: {
-        path: RoutePath["app-repeat"],
-        element: <AppRepeatPage />,
-        authOnly: true,
-    },
-
-    [AppRoutes.NOT_FOUND]: {
-        path: RoutePath["not-found"],
-        element: <>Not found</>,
+    [AppRoutes.ADMIN]: {
+        path: RoutePath.admin,
+        element: <AdminPage />,
+        // authOnly: true,
     },
 };
+
+export default routerConfig;

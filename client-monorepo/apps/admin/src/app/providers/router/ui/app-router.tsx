@@ -8,8 +8,6 @@ import {
 import { PageLoader } from "@/shared/ui/custom/page-loader";
 import { cn } from "@/shared/lib/utils";
 
-import { RequireAuth } from "./require-auth";
-
 interface AppRouterProps {
     className?: string;
 }
@@ -21,19 +19,7 @@ export const AppRouter = ({ className }: AppRouterProps) => {
                 <Suspense fallback={<PageLoader />}>{element}</Suspense>
             );
 
-            return (
-                <Route
-                    key={path}
-                    path={path}
-                    element={
-                        authOnly ? (
-                            <RequireAuth>{component}</RequireAuth>
-                        ) : (
-                            component
-                        )
-                    }
-                />
-            );
+            return <Route key={path} path={path} element={component} />;
         },
         [],
     );

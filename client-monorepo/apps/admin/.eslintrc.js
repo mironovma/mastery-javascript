@@ -43,6 +43,8 @@ module.exports = {
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": "off",
+        "@typescript-eslint/dot-notation": "off",
     },
     ignorePatterns: [".eslintrc.js", "src/shared/ui/*.tsx"],
 };

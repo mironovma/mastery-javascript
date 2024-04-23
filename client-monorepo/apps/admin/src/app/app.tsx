@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Suspense, useEffect } from "react";
 
 import { AppRouter } from "@/app/providers/router";
-import { Navbar } from "@/widgets/navbar";
+// import { Navbar } from "@/widgets/navbar";
 
 export default observer(function App() {
     useEffect(() => {
@@ -18,7 +18,7 @@ export default observer(function App() {
     return (
         <Suspense fallback="">
             <div className="min-h-dvh">
-                <Navbar />
+                {/* <Navbar /> */}
                 <AppRouter />
             </div>
             <Toaster richColors />

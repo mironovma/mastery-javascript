@@ -2,7 +2,7 @@
     "name": "@apps/admin",
     "version": "1.0.0",
     "scripts": {
-        "start": "webpack serve --env port=3000 mode=development",
+        "start": "webpack serve --env port=3001 mode=development",
         "build:prod": "webpack --env mode=production",
         "build:dev": "webpack --env mode=development",
         "lint:ts": "eslint src/**/*.{ts,tsx}"

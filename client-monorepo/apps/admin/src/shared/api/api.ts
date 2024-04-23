@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { AuthResponse } from "@/features/user-auth";
+// import { AuthResponse } from "@/features/user-auth";
 
 // TODO: вынести в глобальную переменную env + в вебпаке + global d ts
 export const API_URL = "http://localhost:5000/api";
@@ -57,12 +57,14 @@ $api.interceptors.response.use(
             try {
                 // Обновляем  пару токенов
                 // Если пришел 401, то, скорее всего, умер access токен
-                const response = await axios.get<AuthResponse>(
-                    `${API_URL}/refresh`,
-                    { withCredentials: true },
-                );
+                // const response = await axios.get<AuthResponse>(
+                const response = await axios.get(`${API_URL}/refresh`, {
+                    withCredentials: true,
+                });
 
                 // Устанавливаем в localStorage access токен
+                // TODO:
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 localStorage.setItem("token", response.data.accessToken);
 
                 // 3 - снова пытаемся выполнить запрос повторно с исходными параметрами
