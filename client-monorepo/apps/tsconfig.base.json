@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "module": "ESNext",
+        "target": "es6",
+        "allowJs": true,
+        "moduleResolution": "node",
+
+        "jsx": "react-jsx",
+
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+
+        // Чтобы импортить json-файлы (package.json)
+        "resolveJsonModule": true
+    },
+
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    }
+}
