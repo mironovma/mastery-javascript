@@ -34,8 +34,10 @@ export default (env: EnvVariables) => {
             // В этом случае отдаем конфиг для роутера
             // Важно, чтобы экспорт этого конфига был по дефолту
             exposes: {
-                "./router": "./src/shared/config/router/router-config.tsx",
+                "./router-config":
+                    "./src/shared/config/router/router-config.tsx",
                 // отдать можно любой другой файл или несколько, просто перечисляя
+                // "./test": "./src/shared/test/test.ts",
             },
             shared: {
                 ...packageJson.dependencies,

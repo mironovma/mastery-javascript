@@ -1,9 +1,8 @@
 import { Suspense, useCallback } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import {
+import routerConfig, {
     AppRoutesProps,
-    routerConfig,
 } from "@/shared/config/router/router-config";
 import { PageLoader } from "@/shared/ui/custom/page-loader";
 import { cn } from "@/shared/lib/utils";

@@ -1,7 +1,6 @@
 import { RouteProps } from "react-router-dom";
 
-// TODO: изменить название папки!!!
-import { AdminPage } from "@/pages/main-page";
+import { AdminPage } from "@/pages/admin-page";
 
 export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
     authOnly?: boolean;
@@ -9,17 +8,23 @@ export interface AppRoutesProps extends Pick<RouteProps, "path" | "element"> {
 
 export enum AppRoutes {
     ADMIN = "admin",
+    ADMIN_USERS = "admin_users",
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN]: "/admin",
+    [AppRoutes.ADMIN_USERS]: "/admin/users",
 };
 
-export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
+const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.ADMIN]: {
         path: RoutePath.admin,
         element: <AdminPage />,
-        // authOnly: true,
+        // authOnly: true
+    },
+    [AppRoutes.ADMIN_USERS]: {
+        path: RoutePath.admin_users,
+        element: <div>ADMIN USERS PAGE</div>,
     },
 };
 

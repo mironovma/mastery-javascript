@@ -7,6 +7,7 @@
         "paths": {
             "@/*": ["./src/*"],
             "@packages/*": ["../../packages/*"]
+            // "admin/*": ["../admin/src/shared/config/router/*"]
         }
     }
 }

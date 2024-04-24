@@ -17,6 +17,7 @@ export const buildPlugins = ({
         new HtmlWebpackPlugin({
             minify: true,
             template: paths.html,
+            publicPath: "/",
         }),
         new webpack.ProgressPlugin(),
     ];
@@ -35,7 +36,7 @@ export const buildPlugins = ({
                 patterns: [
                     { from: paths.locales, to: `${paths.output}/locales` },
                 ],
-            })
+            }),
         );
     }
 
