@@ -1,8 +1,8 @@
 import path from "path";
 import webpack from "webpack";
 
-import type { BuildMode, BuildPaths } from "@packages/config-webpack";
-import { buildConfig } from "@packages/config-webpack";
+import type { BuildMode, BuildPaths } from "@packages/webpack-config";
+import { buildConfig } from "@packages/webpack-config";
 
 import packageJson from "./package.json";
 
