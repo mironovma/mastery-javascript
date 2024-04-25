@@ -54,6 +54,7 @@ chart.js, sonner,
 i18n,
 Tailwind, Scss, Css modules, shadcn/ui,
 Webpack, Babel
+Монорепозиторий (npm workspaces), микрофронты (module federation)
 ```
 
 #### Для локального запуска приложения:
